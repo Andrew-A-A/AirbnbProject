@@ -4,7 +4,6 @@
 #include<sstream>
 #include<vector>
 #include<unordered_map>
-#include<istream>
 
 #include"AirbnbHosts.h"
 #include"AirbnbPlaces.h"
@@ -176,8 +175,8 @@ int main()
             cin >> usrname;
             write.push_back(usrname);
             cout << "Enter your fullname: " << endl;
+            cin.ignore();
             getline(cin, flname);
-            cout << flname;
             write.push_back(flname);
             cout << "Enter your email: " << endl;
             cin >> mail;
@@ -209,7 +208,7 @@ int main()
             traveler = false;
             write.push_back("Host");
             string usrname;
-            string flname1,flname2,flname;
+            string flname;
             string pswrd;
             string mail;
             string nationalty;
@@ -219,9 +218,8 @@ int main()
             cin >> usrname;
             write.push_back(usrname);
             cout << "Enter your fullname: " << endl;
-            cin >> flname1>>flname2;
-            flname += flname1;
-            flname += flname2;
+            cin.ignore();
+            getline(cin,flname);
             write.push_back(flname);
             cout << "Enter your email: " << endl;
             cin >> mail;
