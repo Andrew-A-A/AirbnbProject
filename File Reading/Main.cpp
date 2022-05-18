@@ -17,10 +17,10 @@ vector<string> read;
 vector<string> write;
 string filepaths[5] =
 {
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\Taveler.txt",
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\Hosts.txt",
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\Trips.txt",
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\Places.txt"
+    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Traveler.txt",
+    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Hosts.txt",
+    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Trips.txt",
+    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Places.txt"
 };
 
 void stringop(string curr, int num)
@@ -45,7 +45,7 @@ void stringop(string curr, int num)
         }
     }
 }
-void readfile(string path,fstream& file) 
+void readfile(string path,ifstream& file) 
 {
     string line;
     file.open(path, ios::in);
@@ -59,10 +59,7 @@ void readfile(string path,fstream& file)
             stringop(line, countlines);
             countlines++;
         }
-        for (int j = 0; j < read.size(); j++)
-        {
-            cout << read[j] << endl;
-        }
+
     }
     else
     {
@@ -71,10 +68,10 @@ void readfile(string path,fstream& file)
     file.close();
 }
 
-void writefile(string path, fstream& file)
+void writefile(string path, ofstream& file)
 {
     string line;
-    file.open(path, ios::out);
+    file.open(path, ios::app);
     if (file.is_open())
     {
         for (int i = 0; i < write.size(); i++) 
@@ -93,7 +90,7 @@ void writefile(string path, fstream& file)
                 }
             }
         }
-        file >> line;
+        file << line << endl;
     }
     else 
     {
@@ -146,7 +143,7 @@ void inserthost(AirbnbHosts& host)
 }
 int main()
 {
-    fstream Airbnb;
+    ofstream enterdata;
     int sorl, torh;
     bool signup = false, login = false, traveler = false, host = false, place = false, trip = false;
     cout << "Do You want to signup or login?" << endl;
@@ -199,7 +196,8 @@ int main()
             write.push_back(age);
             Travelers traveler(usrname, flname, pswrd, mail, nationalty, gndr, year);
             inserttraveler(traveler);
-            writefile(filepaths[0], Airbnb);
+            string currstring = filepaths[0];
+            writefile(currstring.c_str(), enterdata);
 
         }
         else if (torh == 2) 
@@ -242,7 +240,7 @@ int main()
             write.push_back(age);
             AirbnbHosts host(usrname, flname, pswrd, mail, nationalty, gndr, year);
             inserthost(host);
-            writefile(filepaths[1], Airbnb);
+            writefile(filepaths[1], enterdata);
         }
     }
     else if (sorl == 2) 
