@@ -19,5 +19,6 @@ private:
 public:
 	HostsPlaces();
 	HostsPlaces(string city, string start, string end,float price);
+	~HostsPlaces(void);
 };
 

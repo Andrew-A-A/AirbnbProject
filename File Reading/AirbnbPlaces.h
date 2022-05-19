@@ -14,4 +14,5 @@ class AirbnbPlaces
 	AirbnbHosts host;
 	AirbnbPlaces();
 	AirbnbPlaces(AirbnbHosts host, vector<HostsPlaces> places, availability dates);
+	~AirbnbPlaces(void);
 };

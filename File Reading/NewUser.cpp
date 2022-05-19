@@ -16,3 +16,7 @@ NewUser::NewUser(string username, string fullname, string password, string email
 	this->gender = gender;
 	this->nationality = nationality;
 }
+
+NewUser::~NewUser()
+{
+}

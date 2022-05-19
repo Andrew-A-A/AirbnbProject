@@ -18,3 +18,7 @@ HostsPlaces::HostsPlaces(string city, string start, string end, float price)
 	availability(start, end);
 
 }
+
+HostsPlaces::~HostsPlaces()
+{
+}

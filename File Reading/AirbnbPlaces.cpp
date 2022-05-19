@@ -7,3 +7,7 @@ AirbnbPlaces::AirbnbPlaces(AirbnbHosts host, vector<HostsPlaces> places, availab
 {
 
 }
+
+AirbnbPlaces::~AirbnbPlaces()
+{
+}
