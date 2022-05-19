@@ -1,6 +1,3 @@
 Username% Fullname% email% password% Nationality% Gander(M|F)% Age%
 MonicaSameh% Monica Sameh% monica@gmail.com% 7amada2% egypt% F% 20%
 AndrewAdel% Andrew Adel% andrew@gmail.com% 7amada3% egypt% M% 20%
-FFFHHH34% Hana Ahmed% hana@gmail.com% hana1234% Egypt% F% 29%
-OmarAhmed% Omar Ahmed% omar@yahoo.com% omar12345% Egypt% m% 23%
-AhmedEssam% Ahmed Essam% ahmed@yahoo.com% ahmed4567% Egyptian% M% 30%
