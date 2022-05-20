@@ -13,6 +13,7 @@ private:
 public:
 	AirbnbHosts();
 	AirbnbHosts(string username, string fullname, string password, string email, string nationality, char gender, int age);
-
+	void AddPlaces(AirbnbHosts host, string city, string start, string end, float price);
+	~AirbnbHosts(void);
 };
 

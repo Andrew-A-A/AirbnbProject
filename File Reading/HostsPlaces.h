@@ -15,9 +15,11 @@ class HostsPlaces
 private:
 	string city;
 	float pricepernight;
+	string Hostusername;
 
 public:
 	HostsPlaces();
-	HostsPlaces(string city, string start, string end,float price);
+	HostsPlaces(string hostusername,string city, string start, string end,float price);
+	~HostsPlaces(void);
 };
 
