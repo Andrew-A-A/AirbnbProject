@@ -6,12 +6,12 @@
 #include<unordered_map>
 
 //including all the classes created
-#include"AirbnbHosts.h"
-#include"AirbnbPlaces.h"
-#include"HostsPlaces.h"
-#include"NewUser.h"
-#include"Travelers.h"
-#include"TravelerTrips.h"
+#include"classes/AirbnbHosts.h"
+#include"classes/AirbnbPlaces.h"
+#include"classes/HostsPlaces.h"
+#include"classes/NewUser.h"
+#include"classes/Travelers.h"
+#include"classes/TravelerTrips.h"
 
 using namespace std;
 vector<string> read;//vector to write into the data you read from the file
@@ -19,10 +19,10 @@ vector<string> write;//vector to write into the data you need to write in your f
 
 string filepaths[5] =
 {
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Traveler.txt",
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Hosts.txt",
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Trips.txt",
-    "D:\\University\\2nd Year\\2nd Year 2nd Term\\Data Structures\\Project\\File Reading\\File Reading\\Places.txt"
+    "..\\Data\\Traveler.txt",
+    "..\\Data\\Hosts.txt",
+    "..\\Data\\Trips.txt",
+    "..\\Data\\Places.txt"
 };
 //These are the file paths to the text files 
 
