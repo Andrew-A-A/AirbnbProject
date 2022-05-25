@@ -9,3 +9,5 @@ TravelerTrips::TravelerTrips(string Tusername, string city, string start, string
 	this->mxprice = mx;
 	this->mnprice = mn;
 }
+
+TravelerTrips::TravelerTrips() {}
