@@ -12,12 +12,12 @@
 #include"classes/NewUser.h"
 #include"classes/Travelers.h"
 #include"classes/TravelerTrips.h"
-
 using namespace std;
+
 vector<string> read;//vector to write into the data you read from the file
 vector<string> write;//vector to write into the data you need to write in your file
 
-string filepaths[5] =
+string filePaths[5] =
 {
     "..\\Data\\Traveler.txt",
     "..\\Data\\Hosts.txt",
@@ -26,7 +26,7 @@ string filepaths[5] =
 };
 //These are the file paths to the text files 
 
-struct hostdata
+struct hostData
 {
     string fullname;
     string password;
@@ -35,7 +35,7 @@ struct hostdata
     char gender;
     int age;
 };
-struct travelerdata
+struct travelerData
 {
     string fullname;
     string password;
@@ -44,11 +44,170 @@ struct travelerdata
     char gender;
     int age;
 };
-unordered_map<string, hostdata>hostmap;
-unordered_map<string, travelerdata>travelermap;
-/* created the struct so that to pass the map objects of structand the key will be the usernameand
-the value will be the struct which containes the rest of the data in the object */
+unordered_map<string, hostData>hostMap;
+unordered_map<string, travelerData>travelerMap;
+/* created the struct so that to pass the map objects of structured the key will be the username
+the value will be the struct which contains the rest of the data in the object */
 
+// User-defined functions
+
+void stringop(string curr, int num);
+void InsertTraveler(Travelers& traveler);
+void InsertHost(AirbnbHosts& host);
+Travelers ReadTraveler();
+AirbnbHosts ReadHosts();
+int countLine(string path, ifstream& file);
+void readfile(string path, ifstream& file, int y);
+void writefile(string path, ofstream& file);
+
+int main()
+{
+    ofstream enterdata;
+    ifstream readdata;
+    int y = countLine(filePaths[0], readdata);
+    readfile((filePaths[0]), readdata, y);
+    int x = countLine(filePaths[1], readdata);
+    readfile((filePaths[1]), readdata, x);
+    //Fill up the map from the text files
+    int sorl, torh;//sign up or login , traveler or host
+    bool signup = false, login = false, traveler = false, host = false, place = false, trip = false;
+    cout << "==========================[Welcome to Simplified Airbnb]==========================" << endl;
+    cout << "\t\t\t Do You want to signup or login?" << endl;
+    cout << "To signup press 1 to login press 2" << endl;
+    cin >> sorl;
+    if (sorl == 1) 
+    {
+        signup = true;
+        login = false;
+        cout << "Do you want to signup as a traveler or as a host?" << endl;
+        cout << "To signup as a traveler press 1 to signup as a host press 2" << endl;
+        cin >> torh;
+        if (torh == 1) 
+        {
+            host = false;
+            traveler = true;
+            write.push_back("Traveler");
+            string usrname;
+            string flname;
+            string pswrd;
+            string mail;
+            string nationalty;
+            char gndr;
+            int year;
+            cout << "Enter your username: " << endl;
+            cin >> usrname;
+            write.push_back(usrname);
+            cout << "Enter your fullname: " << endl;
+            cin.ignore();
+            getline(cin, flname);
+            write.push_back(flname);
+            cout << "Enter your email: " << endl;
+            cin >> mail;
+            write.push_back(mail);
+            cout << "Enter your password: " << endl;
+            cin >> pswrd;
+            write.push_back(pswrd);
+            cout << "Enter your nationality: " << endl;
+            cin >> nationalty;
+            write.push_back(nationalty);
+            cout << "Enter your gender (no offense M|F): " << endl;
+            cin >> gndr;
+            string gender;
+            gender += gndr;
+            write.push_back(gender);
+            cout << "Enter your age: " << endl;
+            cin >> year;
+            string age;
+            age = to_string(year);
+            write.push_back(age);
+            Travelers traveler(usrname, flname, pswrd, mail, nationalty, gndr, year);
+            InsertTraveler(traveler);
+            string currstring = filePaths[0];
+            writefile(currstring.c_str(), enterdata);
+
+        }
+        else if (torh == 2) 
+        {
+            host = true;
+            traveler = false;
+            write.push_back("Host");
+            string usrname;
+            string flname;
+            string pswrd;
+            string mail;
+            string nationalty;
+            char gndr;
+            int year;
+            cout << "Enter your username: " << endl;
+            cin >> usrname;
+            write.push_back(usrname);
+            cout << "Enter your fullname: " << endl;
+            cin.ignore();
+            getline(cin,flname);
+            write.push_back(flname);
+            cout << "Enter your email: " << endl;
+            cin >> mail;
+            write.push_back(mail);
+            cout << "Enter your password: " << endl;
+            cin >> pswrd;
+            write.push_back(pswrd);
+            cout << "Enter your nationality: " << endl;
+            cin >> nationalty;
+            write.push_back(nationalty);
+            cout << "Enter your gender (no offense M|F): " << endl;
+            cin >> gndr;
+            string gender;
+            gender += gndr;
+            write.push_back(gender);
+            cout << "Enter your age: " << endl;
+            cin >> year;
+            string age;
+            age = to_string(year);
+            write.push_back(age);
+            AirbnbHosts host(usrname, flname, pswrd, mail, nationalty, gndr, year);
+            InsertHost(host);
+            writefile(filePaths[1], enterdata);
+        }
+    }
+    else if (sorl == 2) 
+    {
+        login = true;
+        signup = false;
+        cout << "Do you want to login as a traveler or as a host?" << endl;
+        cout << "To signup as a traveler press 1 to signup as a host press 2" << endl;
+        cin >> torh;
+        if (torh == 1)
+        {
+            
+            cout << "Please enter your username: " << endl;
+            string usrname;
+            cin >> usrname;
+            jump:
+            cout << "Enter your password: " << endl;
+            string pswrd;
+            cin >> pswrd;
+            if (travelerMap[usrname].password == pswrd)
+            {
+                cout << "Hello " << travelerMap[usrname].fullname << " :) Would you like to book a new trip? " << endl;
+                cout << "To book a new trip press ";
+            }
+            else 
+            {
+                if (travelerMap[usrname].password.empty())
+                {
+                    cout << "Please sign up first to be able to book a trip :( " << endl;
+                }
+                else 
+                {
+                    cout << "Incorrect password please enter the correct password " << endl;
+                    goto jump;
+                }
+            }
+
+        }
+    }
+
+}
 void stringop(string curr, int num)
 {
     string s;
@@ -74,32 +233,31 @@ void stringop(string curr, int num)
 }
 /* Gets the line from file and divides the line into the fields that the object needs*/
 
-void inserttraveler(Travelers& traveler)
+void InsertTraveler(Travelers& traveler)
 {
-    travelerdata data;
+    travelerData data;
     data.fullname = traveler.fullname;
     data.age = traveler.age;
     data.email = traveler.email;
     data.gender = traveler.gender;
     data.nationality = traveler.nationality;
     data.password = traveler.password;
-    travelermap[traveler.username] = data;
+    travelerMap[traveler.username] = data;
 }
-void inserthost(AirbnbHosts& host)
+void InsertHost(AirbnbHosts& host)
 {
-    hostdata data;
+    hostData data;
     data.fullname = host.fullname;
     data.age = host.age;
     data.email = host.email;
     data.gender = host.gender;
     data.nationality = host.nationality;
     data.password = host.password;
-    hostmap[host.username] = data;
+    hostMap[host.username] = data;
 }
 /*both insert functions create the struct objects and pushes them to the map*/
-Travelers readtraveler()
+Travelers ReadTraveler()
 {
-    //cout << read[6] << endl;
     int x = stoi(read[6]);
     Travelers traveler(read[0], read[1], read[3], read[2], read[4], read[5][0], x);
     /* traveler.username = read[1];
@@ -111,7 +269,7 @@ Travelers readtraveler()
      traveler.age = stoi(read[7]);*/
     return traveler;
 }
-AirbnbHosts readhosts()
+AirbnbHosts ReadHosts()
 {
     AirbnbHosts host(read[0], read[1], read[3], read[2], read[4], read[5][0], stoi(read[6]));
     /* host.username = read[1];
@@ -161,15 +319,15 @@ void readfile(string path, ifstream& file, int y)
             }
             getline(file, line);
             stringop(line, countlines);
-            if (path == filepaths[0] && countlines > 0)
+            if (path == filePaths[0] && countlines > 0)
             {
-                Travelers trav = readtraveler();
-                inserttraveler(trav);
+                Travelers trav = ReadTraveler();
+                InsertTraveler(trav);
             }
-            else if (path == filepaths[1] && countlines > 0)
+            else if (path == filePaths[1] && countlines > 0)
             {
-                AirbnbHosts hos = readhosts();
-                inserthost(hos);
+                AirbnbHosts hos = ReadHosts();
+                InsertHost(hos);
             }
             countlines++;
         }
@@ -214,151 +372,3 @@ void writefile(string path, ofstream& file)
     file.close();
 }
 /*writefile writes in the file*/
-
-int main()
-{
-    ofstream enterdata;
-    ifstream readdata;
-    int y = countLine(filepaths[0], readdata);
-    readfile((filepaths[0]), readdata, y);
-    int x = countLine(filepaths[1], readdata);
-    readfile((filepaths[1]), readdata, x);
-    //Fill up the map from the textfiles
-    int sorl, torh;//sign up or login , traveler or host
-    bool signup = false, login = false, traveler = false, host = false, place = false, trip = false;
-    cout << "Do You want to signup or login?" << endl;
-    cout << "To signup press 1 to login press 2" << endl;
-    cin >> sorl;
-    if (sorl == 1) 
-    {
-        signup = true;
-        login = false;
-        cout << "Do you want to signup as a traveler or as a host?" << endl;
-        cout << "To signup as a traveler press 1 to signup as a host press 2" << endl;
-        cin >> torh;
-        if (torh == 1) 
-        {
-            host = false;
-            traveler = true;
-            write.push_back("Traveler");
-            string usrname;
-            string flname;
-            string pswrd;
-            string mail;
-            string nationalty;
-            char gndr;
-            int year;
-            cout << "Enter your username: " << endl;
-            cin >> usrname;
-            write.push_back(usrname);
-            cout << "Enter your fullname: " << endl;
-            cin.ignore();
-            getline(cin, flname);
-            write.push_back(flname);
-            cout << "Enter your email: " << endl;
-            cin >> mail;
-            write.push_back(mail);
-            cout << "Enter your password: " << endl;
-            cin >> pswrd;
-            write.push_back(pswrd);
-            cout << "Enter your nationality: " << endl;
-            cin >> nationalty;
-            write.push_back(nationalty);
-            cout << "Enter your gender (no offense M|F): " << endl;
-            cin >> gndr;
-            string gender;
-            gender += gndr;
-            write.push_back(gender);
-            cout << "Enter your age: " << endl;
-            cin >> year;
-            string age;
-            age = to_string(year);
-            write.push_back(age);
-            Travelers traveler(usrname, flname, pswrd, mail, nationalty, gndr, year);
-            inserttraveler(traveler);
-            string currstring = filepaths[0];
-            writefile(currstring.c_str(), enterdata);
-
-        }
-        else if (torh == 2) 
-        {
-            host = true;
-            traveler = false;
-            write.push_back("Host");
-            string usrname;
-            string flname;
-            string pswrd;
-            string mail;
-            string nationalty;
-            char gndr;
-            int year;
-            cout << "Enter your username: " << endl;
-            cin >> usrname;
-            write.push_back(usrname);
-            cout << "Enter your fullname: " << endl;
-            cin.ignore();
-            getline(cin,flname);
-            write.push_back(flname);
-            cout << "Enter your email: " << endl;
-            cin >> mail;
-            write.push_back(mail);
-            cout << "Enter your password: " << endl;
-            cin >> pswrd;
-            write.push_back(pswrd);
-            cout << "Enter your nationality: " << endl;
-            cin >> nationalty;
-            write.push_back(nationalty);
-            cout << "Enter your gender (no offense M|F): " << endl;
-            cin >> gndr;
-            string gender;
-            gender += gndr;
-            write.push_back(gender);
-            cout << "Enter your age: " << endl;
-            cin >> year;
-            string age;
-            age = to_string(year);
-            write.push_back(age);
-            AirbnbHosts host(usrname, flname, pswrd, mail, nationalty, gndr, year);
-            inserthost(host);
-            writefile(filepaths[1], enterdata);
-        }
-    }
-    else if (sorl == 2) 
-    {
-        login = true;
-        signup = false;
-        cout << "Do you want to login as a traveler or as a host?" << endl;
-        cout << "To signup as a traveler press 1 to signup as a host press 2" << endl;
-        cin >> torh;
-        if (torh == 1)
-        {
-            
-            cout << "Please enter your username: " << endl;
-            string usrname;
-            cin >> usrname;
-            jump:
-            cout << "Enter your password: " << endl;
-            string pswrd;
-            cin >> pswrd;
-            if (travelermap[usrname].password == pswrd) 
-            {
-                cout << "Hello " <<travelermap[usrname].fullname << " :) Would you like to book a new trip? " << endl;
-                cout << "To book a new trip press ";
-            }
-            else 
-            {
-                if (travelermap[usrname].password.empty()) 
-                {
-                    cout << "Please sign up first to be able to book a trip :( " << endl;
-                }
-                else 
-                {
-                    cout << "Incorrect password please enter the correct password " << endl;
-                    goto jump;
-                }
-            }
-
-        }
-    }
-
-}
