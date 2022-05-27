@@ -139,8 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="AirbnbHosts.cpp" />
-    <ClCompile Include="AirbnbPlaces.cpp" />
+    <ClCompile Include="Host.cpp" />
     <ClCompile Include="HostsPlaces.cpp" />
     <ClCompile Include="../Main.cpp" />
     <ClCompile Include="NewUser.cpp" />
@@ -148,8 +147,7 @@
     <ClCompile Include="TravelerTrips.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AirbnbHosts.h" />
-    <ClInclude Include="AirbnbPlaces.h" />
+    <ClInclude Include="Host.h" />
     <ClInclude Include="HostsPlaces.h" />
     <ClInclude Include="NewUser.h" />
     <ClInclude Include="Travelers.h" />
