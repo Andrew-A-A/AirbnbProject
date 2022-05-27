@@ -13,6 +13,7 @@ struct availability
 class HostsPlaces
 {
 private:
+
 	string city;
 	float pricepernight;
 	string Hostusername;

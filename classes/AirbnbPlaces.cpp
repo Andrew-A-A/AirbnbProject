@@ -3,7 +3,7 @@ AirbnbPlaces::AirbnbPlaces()
 {
 
 }
-AirbnbPlaces::AirbnbPlaces(AirbnbHosts host, vector<HostsPlaces> places, availability dates) 
+AirbnbPlaces::AirbnbPlaces(Host host, vector<HostsPlaces> places, availability dates)
 {
 
 }

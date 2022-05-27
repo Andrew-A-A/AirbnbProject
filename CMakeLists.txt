@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 14)
 include_directories("classes")
 
 add_executable(AirbnbProject
-        "classes/AirbnbHosts.cpp"
-        "classes/AirbnbHosts.h"
+        "classes/Host.cpp"
+        "classes/Host.h"
         "classes/AirbnbPlaces.cpp"
         "classes/AirbnbPlaces.h"
         "classes/HostsPlaces.cpp"
@@ -18,4 +18,4 @@ add_executable(AirbnbProject
         "classes/Travelers.cpp"
         "classes/Travelers.h"
         "classes/TravelerTrips.cpp"
-        "classes/TravelerTrips.h")
+        "classes/TravelerTrips.h" classes/Admin.cpp classes/Admin.h)
