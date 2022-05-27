@@ -142,7 +142,7 @@
     <ClCompile Include="AirbnbHosts.cpp" />
     <ClCompile Include="AirbnbPlaces.cpp" />
     <ClCompile Include="HostsPlaces.cpp" />
-    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="../Main.cpp" />
     <ClCompile Include="NewUser.cpp" />
     <ClCompile Include="Travelers.cpp" />
     <ClCompile Include="TravelerTrips.cpp" />
