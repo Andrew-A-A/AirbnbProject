@@ -74,14 +74,8 @@ Admin ReadAdmin();
 int countLine(string path, ifstream& file);
 void readfile(string path, ifstream& file, int y);
 void writefile(string path, ofstream& file);
-
+void Signup(int torh);
 int main() {
-    // Hard coded Admin Data
-//    Admin admin1("wezza", "Mariz Erian", "2562", "ZOZA@ZOZA.com", "Egy",  'F', 19);
-//    Admin admin2("andrew", "Andrew Adel", "1971", "AndroAdel@LOL.com", "Egy",  'M', 20);
-//    adminMap[admin1.getUsername()]=admin1;
-//    adminMap[admin2.getUsername()]=admin2;
-//===================================
     ofstream enterData;
     ifstream readData;
     int y = countLine(filePaths[0], readData);
@@ -94,100 +88,11 @@ int main() {
     int sorl, torh;//sign up or login , traveler or host
     bool signup = false, login = false, traveler = false, host = false, place = false, trip = false;
     cout << "==========================[Welcome to Simplified Airbnb]==========================" << endl;
-    //   Admin admin= ReadAdmin();
-    // adminMap[admin.getUsername()]=admin;
     cout << "\t\t\t Do You want to signup or login ?" << endl;
     cout << "To signup press 1 \nTo login press 2" << endl;
     cin >> sorl;
     if (sorl == 1) {
-        signup = true;
-        login = false;
-        cout << "Do you want to signup as a traveler or as a host?" << endl;
-        cout << "To signup as a traveler press 1 \nTo signup as a host press 2" << endl;
-        cin >> torh;
-        if (torh == 1) {
-            host = false;
-            traveler = true;
-            write.push_back("Traveler");
-            string usrname;
-            string flname;
-            string pswrd;
-            string mail;
-            string nationalty;
-            char gndr;
-            int year;
-            cout << "Enter your username: " << endl;
-            cin >> usrname;
-            write.push_back(usrname);
-            cout << "Enter your fullname: " << endl;
-            cin.ignore();
-            getline(cin, flname);
-            write.push_back(flname);
-            cout << "Enter your email: " << endl;
-            cin >> mail;
-            write.push_back(mail);
-            cout << "Enter your password: " << endl;
-            cin >> pswrd;
-            write.push_back(pswrd);
-            cout << "Enter your nationality: " << endl;
-            cin >> nationalty;
-            write.push_back(nationalty);
-            cout << "Enter your gender (no offense M|F): " << endl;
-            cin >> gndr;
-            string gender;
-            gender += gndr;
-            write.push_back(gender);
-            cout << "Enter your age: " << endl;
-            cin >> year;
-            string age;
-            age = to_string(year);
-            write.push_back(age);
-            Travelers traveler(usrname, flname, pswrd, mail, nationalty, gndr, year);
-            InsertTraveler(traveler);
-            string currstring = filePaths[0];
-            writefile(currstring.c_str(), enterData);
-
-        } else if (torh == 2) {
-            host = true;
-            traveler = false;
-            write.push_back("Host");
-            string usrname;
-            string flname;
-            string pswrd;
-            string mail;
-            string nationalty;
-            char gndr;
-            int year;
-            cout << "Enter your username: " << endl;
-            cin >> usrname;
-            write.push_back(usrname);
-            cout << "Enter your fullname: " << endl;
-            cin.ignore();
-            getline(cin, flname);
-            write.push_back(flname);
-            cout << "Enter your email: " << endl;
-            cin >> mail;
-            write.push_back(mail);
-            cout << "Enter your password: " << endl;
-            cin >> pswrd;
-            write.push_back(pswrd);
-            cout << "Enter your nationality: " << endl;
-            cin >> nationalty;
-            write.push_back(nationalty);
-            cout << "Enter your gender (no offense M|F): " << endl;
-            cin >> gndr;
-            string gender;
-            gender += gndr;
-            write.push_back(gender);
-            cout << "Enter your age: " << endl;
-            cin >> year;
-            string age;
-            age = to_string(year);
-            write.push_back(age);
-            Host host(usrname, flname, pswrd, mail, nationalty, gndr, year);
-            InsertHost(host);
-            writefile(filePaths[1], enterData);
-        }
+        Signup(torh);
     } else if (sorl == 2) {
         login = true;
         signup = false;
@@ -260,7 +165,6 @@ int main() {
             } else {
                 cout << "There is no admin with this user name " << endl;
             }
-
 
         }
 
@@ -449,3 +353,88 @@ void writefile(string path, ofstream& file)
     file.close();
 }
 /*writefile writes in the file*/
+void Signup(int torh){
+    ofstream enterData;
+    cout << "Do you want to signup as a traveler or as a host?" << endl;
+    cout << "To signup as a traveler press 1 \nTo signup as a host press 2" << endl;
+    cin >> torh;
+    if (torh == 1) {
+        write.push_back("Traveler");
+        string usrname;
+        string flname;
+        string pswrd;
+        string mail;
+        string nationalty;
+        char gndr;
+        int year;
+        cout << "Enter your username: " << endl;
+        cin >> usrname;
+        write.push_back(usrname);
+        cout << "Enter your fullname: " << endl;
+        cin.ignore();
+        getline(cin, flname);
+        write.push_back(flname);
+        cout << "Enter your email: " << endl;
+        cin >> mail;
+        write.push_back(mail);
+        cout << "Enter your password: " << endl;
+        cin >> pswrd;
+        write.push_back(pswrd);
+        cout << "Enter your nationality: " << endl;
+        cin >> nationalty;
+        write.push_back(nationalty);
+        cout << "Enter your gender (no offense M|F): " << endl;
+        cin >> gndr;
+        string gender;
+        gender += gndr;
+        write.push_back(gender);
+        cout << "Enter your age: " << endl;
+        cin >> year;
+        string age;
+        age = to_string(year);
+        write.push_back(age);
+        Travelers traveler(usrname, flname, pswrd, mail, nationalty, gndr, year);
+        InsertTraveler(traveler);
+        string currstring = filePaths[0];
+        writefile(currstring.c_str(), enterData);
+
+    } else if (torh == 2) {
+        write.push_back("Host");
+        string usrname;
+        string flname;
+        string pswrd;
+        string mail;
+        string nationalty;
+        char gndr;
+        int year;
+        cout << "Enter your username: " << endl;
+        cin >> usrname;
+        write.push_back(usrname);
+        cout << "Enter your fullname: " << endl;
+        cin.ignore();
+        getline(cin, flname);
+        write.push_back(flname);
+        cout << "Enter your email: " << endl;
+        cin >> mail;
+        write.push_back(mail);
+        cout << "Enter your password: " << endl;
+        cin >> pswrd;
+        write.push_back(pswrd);
+        cout << "Enter your nationality: " << endl;
+        cin >> nationalty;
+        write.push_back(nationalty);
+        cout << "Enter your gender (no offense M|F): " << endl;
+        cin >> gndr;
+        string gender;
+        gender += gndr;
+        write.push_back(gender);
+        cout << "Enter your age: " << endl;
+        cin >> year;
+        string age;
+        age = to_string(year);
+        write.push_back(age);
+        Host host(usrname, flname, pswrd, mail, nationalty, gndr, year);
+        InsertHost(host);
+        writefile(filePaths[1], enterData);
+    }
+}
