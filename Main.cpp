@@ -88,6 +88,7 @@ int main() {
     readfile((filePaths[4]), readData, z);
     //Fill up the map from the text files
     int sorl, torh;//sign up or login , traveler or host
+    int op; //Opearations Selector
     cout << "==========================[Welcome to Simplified Airbnb]==========================" << endl;
     cout << "\t\t\t Do You want to signup or login ?" << endl;
     cout << "To signup press 1 \nTo login press 2" << endl;
@@ -113,7 +114,17 @@ int main() {
                 if (travelerMap[usrname].password == pswrd) {
                     cout << "Hello " << travelerMap[usrname].fullname << " :) Would you like to book a new trip? "
                          << endl;
-                    cout << "To book a new trip press ";
+                  HelloTraveler:
+                    cout << "To book a new trip press : 1 "<<endl;
+                    cin>>op;
+                    if (op==1){
+                        cout<<"Enter Start day for your stay";
+                    }
+                    else{
+                        cout<<"Error !";
+                        goto HelloTraveler;
+                    }
+
                 } else {
                     cout << "Incorrect password please enter the correct password " << endl;
                     goto jumpA;
@@ -135,7 +146,28 @@ int main() {
                 cin >> pswrd;
                 if (hostMap[usrname].password == pswrd) {
                     cout << "Hello " << hostMap[usrname].fullname << " :) Would you like to add new place? " << endl;
-                    cout << "To add a place press ";
+                    cout << "To add a place press 1\n" ;
+                    cin>>op;
+                    if (op==1){
+                        Host host(usrname,hostMap[usrname].fullname,
+                                           hostMap[usrname].password,
+                                           hostMap[usrname].email,hostMap[usrname].nationality,
+                                           hostMap[usrname].gender,hostMap[usrname].age);
+                        cout<<"-------------------<Enter Place Data>-------------------"<<endl;
+                        cout<<"Where place is ? : \n";
+                        string city;
+                        cin>>city;
+                        cout<<"When will your place be available ? : \n";
+                        string startDate;
+                        cin>>startDate;
+                        cout<<"When won't your place be available ? : \n";
+                        string endDate;
+                        cin>>endDate;
+                        cout<<"Set Rent Price : \n";
+                        float price;
+                        cin>>price;
+                       host.AddPlaces(host,city,startDate,endDate,price);
+                    }
                 } else {
                     cout << "Incorrect password please enter the correct password " << endl;
                     goto jumpB;
@@ -159,7 +191,6 @@ int main() {
                     cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
                     helloAdmin:
                     cout << "To View data press : 1\nTo Edit Data press : 2\n";
-                    int op;
                     cin>>op;
                     if (op==1){
                         cout<<"Enter Username of User You want to view : ";
@@ -170,7 +201,7 @@ int main() {
                             cout<<"Enter Password : ";
                             cin>>pswrd;
                             if (pswrd==traveler.password){
-                                cout<<"-----------------------Traveler Data-----------------------"<<endl;
+                                cout<<"-----------------------( Traveler Data )-----------------------"<<endl;
                                 cout<<"Full Name  : "<<traveler.getFullname()<<endl;
                                 cout<<"Email : "<<traveler.getEmail()<<endl;
                                 cout<<"Gender : "<<traveler.getGender()<<endl;
@@ -182,7 +213,7 @@ int main() {
                             Host host = StructToHost(usrname,hostMap[usrname]);
                             torh=2;
                             if (pswrd==host.password){
-                                cout<<"-----------------------Host Data-----------------------"<<endl;
+                                cout<<"-----------------------( Host Data )-----------------------"<<endl;
                                 cout<<"Full Name  : "<<host.getFullname()<<endl;
                                 cout<<"Email : "<<host.getEmail()<<endl;
                                 cout<<"Gender : "<<host.getGender()<<endl;
@@ -286,7 +317,7 @@ Admin ReadAdmin()
 }
 Host ReadHosts()
 {
-    Host host(read[0], read[1], read[3], read[2], read[4], read[5][0], stoi(read[6]));
+    Host host(read[0], read[1], read[2], read[3], read[4], read[5][0], stoi(read[6]));
     /* host.username = read[1];
      host.fullname = read[2];
      host.email = read[3];
