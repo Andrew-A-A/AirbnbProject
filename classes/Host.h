@@ -15,5 +15,6 @@ public:
 	Host(string username, string fullname, string password, string email, string nationality, char gender, int age);
 	void AddPlaces(Host host, string city, string start, string end, float price);
 	~Host(void);
+    int countPlaces();
 };
 

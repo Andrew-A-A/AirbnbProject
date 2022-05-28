@@ -75,6 +75,8 @@ int countLine(string path, ifstream& file);
 void readfile(string path, ifstream& file, int y);
 void writefile(string path, ofstream& file);
 void Signup(int torh);
+Travelers StructToTraveler(string UserName,NoUserNameData Struct);
+Host StructToHost(string UserName,NoUserNameData Struct);
 int main() {
     ofstream enterData;
     ifstream readData;
@@ -86,7 +88,6 @@ int main() {
     readfile((filePaths[4]), readData, z);
     //Fill up the map from the text files
     int sorl, torh;//sign up or login , traveler or host
-    bool signup = false, login = false, traveler = false, host = false, place = false, trip = false;
     cout << "==========================[Welcome to Simplified Airbnb]==========================" << endl;
     cout << "\t\t\t Do You want to signup or login ?" << endl;
     cout << "To signup press 1 \nTo login press 2" << endl;
@@ -94,8 +95,7 @@ int main() {
     if (sorl == 1) {
         Signup(torh);
     } else if (sorl == 2) {
-        login = true;
-        signup = false;
+
         cout << "Do you want to login as a traveler or as a host or Admin?" << endl;
         cout << "To Login as a traveler press 1. \nTo Login as a host press 2.\nTo Login as a Admin press 3. \n"
              << endl;
@@ -157,7 +157,46 @@ int main() {
                 cin >> pswrd;
                 if (adminMap[usrname].getPassword() == pswrd) {
                     cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
-                    cout << "To edit data press : 1\nTo View Data press : 2\n ";
+                    helloAdmin:
+                    cout << "To View data press : 1\nTo Edit Data press : 2\n";
+                    int op;
+                    cin>>op;
+                    if (op==1){
+                        cout<<"Enter Username of User You want to view : ";
+                        cin>>usrname;
+                        if (!travelerMap[usrname].password.empty()) {
+                            Travelers traveler=StructToTraveler(usrname,travelerMap[usrname]);
+                            torh=1;
+                            cout<<"Enter Password : ";
+                            cin>>pswrd;
+                            if (pswrd==traveler.password){
+                                cout<<"-----------------------Traveler Data-----------------------"<<endl;
+                                cout<<"Full Name  : "<<traveler.getFullname()<<endl;
+                                cout<<"Email : "<<traveler.getEmail()<<endl;
+                                cout<<"Gender : "<<traveler.getGender()<<endl;
+                                cout<<"Age : "<<traveler.getAge()<<endl;
+                                cout<<"Nationality : "<<traveler.getNationality()<<endl;
+                            }
+                        }
+                        else if (!hostMap[usrname].password.empty()){
+                            Host host = StructToHost(usrname,hostMap[usrname]);
+                            torh=2;
+                            if (pswrd==host.password){
+                                cout<<"-----------------------Host Data-----------------------"<<endl;
+                                cout<<"Full Name  : "<<host.getFullname()<<endl;
+                                cout<<"Email : "<<host.getEmail()<<endl;
+                                cout<<"Gender : "<<host.getGender()<<endl;
+                                cout<<"Age : "<<host.getAge()<<endl;
+                                cout<<"Nationality : "<<host.getNationality()<<endl;
+                                cout<<"Number of Places : "<<host.countPlaces()<<endl;
+                            }
+                        }
+                        else{
+                            cout<<" There is no user with this username :< "<<endl;
+                            goto helloAdmin;
+                        }
+                        }
+
                 } else {
                     cout << "Incorrect password please enter the correct password " << endl;
                     goto jumpC;
@@ -437,4 +476,16 @@ void Signup(int torh){
         InsertHost(host);
         writefile(filePaths[1], enterData);
     }
+}
+Travelers StructToTraveler(string UserName,NoUserNameData Struct){
+    Travelers traveler = Travelers(UserName,Struct.fullname,
+                                   Struct.password,Struct.email,
+                                   Struct.nationality,Struct.gender,Struct.age);
+    return traveler;
+}
+Host StructToHost(string UserName,NoUserNameData Struct){
+    Host host = Host(UserName,Struct.fullname,
+                                   Struct.password,Struct.email,
+                                   Struct.nationality,Struct.gender,Struct.age);
+    return host;
 }

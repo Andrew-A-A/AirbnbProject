@@ -16,3 +16,7 @@ void Host::AddPlaces(Host host, string city, string start, string end, float pri
 Host::~Host(void)
 {
 }
+
+int Host::countPlaces() {
+    return places.size();
+}

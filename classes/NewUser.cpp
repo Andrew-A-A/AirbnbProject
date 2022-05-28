@@ -44,3 +44,5 @@ char NewUser::getGender() const {
 int NewUser::getAge() const {
     return age;
 }
+
+
