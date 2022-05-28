@@ -1,4 +1,5 @@
-UserName% City% StartDate% EndDate% Price% %isConfirmed
+UserName% City% StartDate% EndDate% Price% isConfirmed%
 andrew%Giza% 20/12/2022% 20/5/2023% 8000.000000%1%
 andrew%Obour% 25/5/2020% 30/8/2020% 5000.000000%0%
 andrew%Alex% 25/06/2022% 19/07/2022% 90000.000000%0%
+andrew%Alex% 20/01/2022% 20/06/2023% 15000.000000%0%

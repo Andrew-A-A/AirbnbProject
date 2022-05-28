@@ -18,14 +18,17 @@ struct availability
 class HostsPlaces
 {
 private:
-    bool isConfirmed;
-	string city;
+
+    bool IsConfirmed;
+	string City;
 	float pricepernight;
 	string Hostusername;
 
 public:
+    availability availability;
 	HostsPlaces();
 	HostsPlaces(string hostusername,string city, string start, string end,float price);
+
     HostsPlaces(string hostusername,string city, string start, string end,float price,bool isConfirmed);
 	~HostsPlaces(void);
 
@@ -34,5 +37,6 @@ public:
     float getPricepernight() const;
 
     const string &getHostusername() const;
+
 };
 

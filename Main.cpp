@@ -178,8 +178,8 @@ int main() {
                         cin>>price;
                         write.push_back(to_string(price));
                         write.push_back("0");
-                       host.AddPlaces(host,city,startDate,endDate,price);
-                       string currstring= filePaths[3];
+                        host.AddPlaces(host,city,startDate,endDate,price);
+                        string currstring= filePaths[3];
                         writefile(currstring.c_str(),enterData);
                     }
                 } else {
@@ -339,8 +339,9 @@ HostsPlaces ReadPlaces()
     else{
       cout<< " Error !";
     }
-
-    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]));
+float x= stof(read[4]);
+    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]),isConfirmed);
+   // Push Queue Here <3
     return place;
 }
 /*both functions take the data read from the file and uses it to create the objects that are to be
