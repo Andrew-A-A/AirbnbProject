@@ -12,6 +12,14 @@ availability::availability(string start, string end)
 	this->enddate = end;
 }
 
+const string &availability::getStartdate() const {
+    return startdate;
+}
+
+const string &availability::getEnddate() const {
+    return enddate;
+}
+
 HostsPlaces::HostsPlaces()
 {
 	availability();
@@ -25,4 +33,20 @@ HostsPlaces::HostsPlaces(string hostusername, string city, string start, string 
 
 HostsPlaces::~HostsPlaces(void)
 {
+}
+
+const string &HostsPlaces::getCity() const {
+    return city;
+}
+
+float HostsPlaces::getPricepernight() const {
+    return pricepernight;
+}
+
+const string &HostsPlaces::getHostusername() const {
+    return Hostusername;
+}
+
+HostsPlaces::HostsPlaces(string hostusername, string city, string start, string end, float price, bool isConfirmed) {
+
 }

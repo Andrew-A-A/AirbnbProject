@@ -5,15 +5,20 @@ using namespace  std;
 
 struct availability
 {
+
 	string startdate;
 	string enddate;
 	availability();
 	availability(string start, string end);
+
+    const string &getStartdate() const;
+
+    const string &getEnddate() const;
 };
 class HostsPlaces
 {
 private:
-
+    bool isConfirmed;
 	string city;
 	float pricepernight;
 	string Hostusername;
@@ -21,6 +26,13 @@ private:
 public:
 	HostsPlaces();
 	HostsPlaces(string hostusername,string city, string start, string end,float price);
+    HostsPlaces(string hostusername,string city, string start, string end,float price,bool isConfirmed);
 	~HostsPlaces(void);
+
+    const string &getCity() const;
+
+    float getPricepernight() const;
+
+    const string &getHostusername() const;
 };
 

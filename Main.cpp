@@ -71,6 +71,7 @@ void InsertHost(Host& host);
 Travelers ReadTraveler();
 Host ReadHosts();
 Admin ReadAdmin();
+HostsPlaces ReadPlaces();
 int countLine(string path, ifstream& file);
 void readfile(string path, ifstream& file, int y);
 void writefile(string path, ofstream& file);
@@ -80,12 +81,14 @@ Host StructToHost(string UserName,NoUserNameData Struct);
 int main() {
     ofstream enterData;
     ifstream readData;
-    int y = countLine(filePaths[0], readData);
-    readfile((filePaths[0]), readData, y);
-    int x = countLine(filePaths[1], readData);
-    readfile((filePaths[1]), readData, x);
-    int z = countLine(filePaths[4], readData);
-    readfile((filePaths[4]), readData, z);
+    int tLines = countLine(filePaths[0], readData);
+    readfile((filePaths[0]), readData, tLines);
+    int hLines = countLine(filePaths[1], readData);
+    readfile((filePaths[1]), readData, hLines);
+    int aLines = countLine(filePaths[4], readData);
+    readfile((filePaths[4]), readData, aLines);
+    int pLines = countLine(filePaths[3], readData);
+    readfile((filePaths[3]), readData, pLines);
     //Fill up the map from the text files
     int sorl, torh;//sign up or login , traveler or host
     int op; //Opearations Selector
@@ -98,7 +101,7 @@ int main() {
     } else if (sorl == 2) {
 
         cout << "Do you want to login as a traveler or as a host or Admin?" << endl;
-        cout << "To Login as a traveler press 1. \nTo Login as a host press 2.\nTo Login as a Admin press 3. \n"
+        cout << "To Login as a traveler press 1. \nTo Login as a host press 2.\nTo Login as an Admin press 3. \n"
              << endl;
         cin >> torh;
         if (torh == 1) {
@@ -119,6 +122,8 @@ int main() {
                     cin>>op;
                     if (op==1){
                         cout<<"Enter Start day for your stay";
+
+
                     }
                     else{
                         cout<<"Error !";
@@ -154,19 +159,28 @@ int main() {
                                            hostMap[usrname].email,hostMap[usrname].nationality,
                                            hostMap[usrname].gender,hostMap[usrname].age);
                         cout<<"-------------------<Enter Place Data>-------------------"<<endl;
+                        write.push_back("HostPlace");
+                        write.push_back(usrname);
                         cout<<"Where place is ? : \n";
                         string city;
                         cin>>city;
+                        write.push_back(city);
                         cout<<"When will your place be available ? : \n";
                         string startDate;
                         cin>>startDate;
+                        write.push_back(startDate);
                         cout<<"When won't your place be available ? : \n";
                         string endDate;
                         cin>>endDate;
+                        write.push_back(endDate);
                         cout<<"Set Rent Price : \n";
                         float price;
                         cin>>price;
+                        write.push_back(to_string(price));
+                        write.push_back("0");
                        host.AddPlaces(host,city,startDate,endDate,price);
+                       string currstring= filePaths[3];
+                        writefile(currstring.c_str(),enterData);
                     }
                 } else {
                     cout << "Incorrect password please enter the correct password " << endl;
@@ -306,26 +320,28 @@ Admin ReadAdmin()
 {
     int x = stoi(read[6]);
     Admin admin(read[0], read[1], read[3], read[2], read[4], read[5][0], x);
-    /* traveler.username = read[1];
-     traveler.fullname = read[2];
-     traveler.email = read[3];
-     traveler.password = read[4];
-     traveler.nationality = read[5];
-     traveler.gender = read[6][0];
-     traveler.age = stoi(read[7]);*/
     return admin;
 }
 Host ReadHosts()
 {
     Host host(read[0], read[1], read[2], read[3], read[4], read[5][0], stoi(read[6]));
-    /* host.username = read[1];
-     host.fullname = read[2];
-     host.email = read[3];
-     host.password = read[4];
-     host.nationality = read[5];
-     host.gender = read[6][0];
-     host.age = stoi(read[7]);*/
     return host;
+}
+HostsPlaces ReadPlaces()
+{
+    bool isConfirmed;
+    if(read[5]=="0"){
+        isConfirmed= false;
+    }
+    else if(read[5]=="1"){
+        isConfirmed= true;
+    }
+    else{
+      cout<< " Error !";
+    }
+
+    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]));
+    return place;
 }
 /*both functions take the data read from the file and uses it to create the objects that are to be
 passed to the insert functions*/
@@ -359,7 +375,7 @@ void readfile(string path, ifstream& file, int y)
         int countlines = 0;
         while (!file.eof())
         {
-            if (!(countlines == y - 1) && countlines != 0)
+            if (countlines != y - 1 && countlines != 0)
             {
                 read.clear();
             }
@@ -374,6 +390,12 @@ void readfile(string path, ifstream& file, int y)
             {
                 Host hos = ReadHosts();
                 InsertHost(hos);
+            }
+            else if (path == filePaths[3] && countlines > 0)
+            {
+               HostsPlaces place = ReadPlaces();
+
+
             }
             else if (path == filePaths[4] && countlines > 0)
             {
