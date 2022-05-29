@@ -8,6 +8,8 @@
 #include "Host.h"
 #include "HostsPlaces.h"
 #include<unordered_map>
+#include <map>
+
 class Admin: NewUser {
 public:
     Admin();
@@ -18,11 +20,12 @@ public:
     static void DeleteData(string usr ,unordered_map<string,NoUserNameData> &map);
     static void Display();
     void Edit(string[]);
-
+    map <pair<string , int>, HostsPlaces> RequestHost(queue<HostsPlaces> , Host &host);
     //Getters
     const string &getUsername() const;
     const string &getPassword() const;
     const string &getFullname() const;
+
 };
 
 

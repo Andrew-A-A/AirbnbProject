@@ -1,6 +1,8 @@
 #pragma once
 #include<string>
 #include<iostream>
+#include "HostsPlaces.h"
+#include <queue>
 using namespace std;
 struct NoUserNameData
 {
@@ -10,7 +12,7 @@ struct NoUserNameData
     string nationality;
     char gender{};
     int age{};
-
+    queue<HostsPlaces> places;
     NoUserNameData();
 
     NoUserNameData(const string &fullname, const string &password, const string &email, const string &nationality,
