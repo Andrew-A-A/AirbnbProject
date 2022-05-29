@@ -17,7 +17,7 @@ struct availability
 };
 class HostsPlaces
 {
-private:
+public:
 
     bool IsConfirmed;
 	string City;

@@ -29,15 +29,16 @@ string filePaths[5] =
 };
 //These are the file paths to the text files 
 
-//struct hostData
-//{
-//    string fullname;
-//    string password;
-//    string email;
-//    string nationality;
-//    char gender;
-//    int age;
-//};
+struct hostData
+{
+    string fullname;
+    string password;
+    string email;
+    string nationality;
+    string place;
+    char gender;
+    int age;
+};
 //struct travelerData
 //{
 //    string fullname;
@@ -49,12 +50,14 @@ string filePaths[5] =
 //};
 struct NoUserNameData
 {
+
     string fullname;
     string password;
     string email;
     string nationality;
     char gender{};
     int age{};
+    queue<HostsPlaces> places;
 };
 
 
@@ -78,6 +81,7 @@ void writefile(string path, ofstream& file);
 void Signup(int torh);
 Travelers StructToTraveler(string UserName,NoUserNameData Struct);
 Host StructToHost(string UserName,NoUserNameData Struct);
+Admin StructToAdmin(string UserName,NoUserNameData Struct);
 int main() {
     ofstream enterData;
     ifstream readData;
@@ -178,8 +182,8 @@ int main() {
                         cin>>price;
                         write.push_back(to_string(price));
                         write.push_back("0");
-                        host.AddPlaces(host,city,startDate,endDate,price);
-                        string currstring= filePaths[3];
+                       host.AddPlaces(host,city,startDate,endDate,price);
+                       string currstring= filePaths[3];
                         writefile(currstring.c_str(),enterData);
                     }
                 } else {
@@ -204,7 +208,7 @@ int main() {
                 if (adminMap[usrname].getPassword() == pswrd) {
                     cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
                     helloAdmin:
-                    cout << "To View data press : 1\nTo Edit Data press : 2\n";
+                    cout << "To View data press : 1\nTo Edit Data press : 2\nTo handle requests press : 3\n";
                     cin>>op;
                     if (op==1){
                         cout<<"Enter Username of User You want to view : ";
@@ -234,6 +238,7 @@ int main() {
                                 cout<<"Age : "<<host.getAge()<<endl;
                                 cout<<"Nationality : "<<host.getNationality()<<endl;
                                 cout<<"Number of Places : "<<host.countPlaces()<<endl;
+
                             }
                         }
                         else{
@@ -241,6 +246,12 @@ int main() {
                             goto helloAdmin;
                         }
                         }
+                    else if (op==3){
+                        Host host = StructToHost(usrname,hostMap[usrname]);
+                        Admin admin = adminMap[usrname];
+                        admin.RequestHost(hostMap[usrname].places , host);
+
+                    }
 
                 } else {
                     cout << "Incorrect password please enter the correct password " << endl;
@@ -300,6 +311,7 @@ void InsertHost(Host& host)
     data.gender = host.gender;
     data.nationality = host.nationality;
     data.password = host.password;
+    data.places=host.places;
     hostMap[host.username] = data;
 }
 /*both insert functions create the struct objects and pushes them to the map*/
@@ -339,9 +351,11 @@ HostsPlaces ReadPlaces()
     else{
       cout<< " Error !";
     }
-float x= stof(read[4]);
-    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]),isConfirmed);
-   // Push Queue Here <3
+
+    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]), isConfirmed);
+
+
+
     return place;
 }
 /*both functions take the data read from the file and uses it to create the objects that are to be
@@ -395,7 +409,7 @@ void readfile(string path, ifstream& file, int y)
             else if (path == filePaths[3] && countlines > 0)
             {
                HostsPlaces place = ReadPlaces();
-
+               hostMap[place.Hostusername].places.push(place);
 
             }
             else if (path == filePaths[4] && countlines > 0)
@@ -540,6 +554,17 @@ Travelers StructToTraveler(string UserName,NoUserNameData Struct){
 Host StructToHost(string UserName,NoUserNameData Struct){
     Host host = Host(UserName,Struct.fullname,
                                    Struct.password,Struct.email,
-                                   Struct.nationality,Struct.gender,Struct.age);
+                                   Struct.nationality,Struct.gender,Struct.age );
+    int size = Struct.places.size();
+    for (int i = 0; i < size ; ++i) {
+        host.places.push(Struct.places.front());
+        Struct.places.pop();
+    }
     return host;
+}
+Admin StructToAdmin(string UserName,NoUserNameData Struct){
+    Admin admin = Admin(UserName,Struct.fullname,
+                     Struct.password,Struct.email,
+                     Struct.nationality,Struct.gender,Struct.age);
+    return admin;
 }
