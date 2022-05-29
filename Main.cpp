@@ -329,13 +329,13 @@ void Signup(int torh){
         char gndr;
         int year;
 
-        EnterUserName:
+        EnterUserNameTraveler:
         cout << "Enter your username: " << endl;
         cin >> usrname;
         if(travelerMap.count(usrname)==1 || hostMap.count(usrname)==1)
         {
             cout<<"Please enter a new username this one has been already used\n";
-            goto EnterUserName;
+            goto EnterUserNameTraveler;
         }
         write.push_back(usrname);               //add username to write vector
         cout << "Enter your fullname: " << endl;
@@ -383,8 +383,15 @@ void Signup(int torh){
         string nationalty;
         char gndr;
         int year;
+
+        EnterUserNameHost:
         cout << "Enter your username: " << endl;
         cin >> usrname;
+        if(travelerMap.count(usrname)==1 || hostMap.count(usrname)==1)
+        {
+            cout<<"Please enter a new username this one has been already used\n";
+            goto EnterUserNameHost;
+        }
         write.push_back(usrname);                //add username to write vector
         cout << "Enter your fullname: " << endl;
         cin.ignore();
@@ -525,7 +532,7 @@ void Login(int torh  ) {
         }
     }
         //Host Case
-        if (torh == 2) {
+    if (torh == 2) {
             //Allow the host to login to add a new place
             cout << "Please enter your username: " << endl;
             string usrname;
@@ -588,7 +595,7 @@ void Login(int torh  ) {
 
         }
         //Admin Case
-        if (torh == 3) {
+    if (torh == 3) {
             //Allow the Admin to login and give access to alter data
             cout << "Please enter your username: " << endl;
             string usrname;
@@ -615,11 +622,11 @@ void Login(int torh  ) {
                             torh = 1;
 
                             cout << "-----------------------( Traveler Data )-----------------------" << endl;
-                            cout << "Full Name  : " << traveler.getFullname() << endl;
-                            cout << "Email : " << traveler.getEmail() << endl;
-                            cout << "Gender : " << traveler.getGender() << endl;
-                            cout << "Age : " << traveler.getAge() << endl;
-                            cout << "Nationality : " << traveler.getNationality() << endl;
+                            cout << "1) Full Name  : " << traveler.getFullname() << endl;
+                            cout << "2) Email : " << traveler.getEmail() << endl;
+                            cout << "3) Gender : " << traveler.getGender() << endl;
+                            cout << "4) Age : " << traveler.getAge() << endl;
+                            cout << "5) Nationality : " << traveler.getNationality() << endl;
                             cout << "--------------------------------------------------------" << endl;
 
                         } else if (!hostMap.count(usrname)) {
@@ -627,12 +634,12 @@ void Login(int torh  ) {
                             torh = 2;
 
                             cout << "-----------------------( Host Data )-----------------------" << endl;
-                            cout << "Full Name  : " << host.getFullname() << endl;
-                            cout << "Email : " << host.getEmail() << endl;
-                            cout << "Gender : " << host.getGender() << endl;
-                            cout << "Age : " << host.getAge() << endl;
-                            cout << "Nationality : " << host.getNationality() << endl;
-                            cout << "Number of Places : " << host.countPlaces() << endl;
+                            cout << "1) Full Name  : " << host.getFullname() << endl;
+                            cout << "2) Email : " << host.getEmail() << endl;
+                            cout << "3) Gender : " << host.getGender() << endl;
+                            cout << "4) Age : " << host.getAge() << endl;
+                            cout << "5) Nationality : " << host.getNationality() << endl;
+                            cout << "6) Number of Places : " << host.countPlaces() << endl;
                             cout << "--------------------------------------------------------" << endl;
                         } else {
                             cout << " There is no user with this username :< " << endl;
@@ -660,11 +667,98 @@ void Login(int torh  ) {
                                 Admin admin = adminMap[usrname];
                                 admin.RequestHost(hostMap[usrname].places, host);
                             }
+                            else if (op == 3 && torh ==1) //the user is traveller and the operation is editing (editing host)
+                            {
+                                int numofdata ;
+                                cout << "Enter the number of the required data to be edited : " << endl ;
+                                cin >> numofdata;
+                                if (numofdata == 1 ) // the admin wants to edit the traveller's name (editing full name data )
+                                {
+                                    cout << " Enter the new name : " << endl ;
+                                    string newname ;
+                                    cin >> newname ;
+                                    travelerMap[usrname].fullname = newname;
+                                }
+                                if (numofdata == 2) // the admin wants to edit the traveller's emails (editing email data )
+                                {
+                                    cout << " Enter the new email : " << endl ;
+                                    string newemail ;
+                                    cin >> newemail ;
+                                    travelerMap[usrname].email = newemail;
+                                }
+                                if (numofdata == 3) // the admin wants to edit the traveller's gender (editing gender data )
+                                {
+                                    cout << " Enter the updated gender : " << endl ;
+                                    char newgender;
+                                    cin >> newgender ;
+                                    travelerMap[usrname].gender = newgender;
+                                }
+                                if (numofdata == 4) // the admin wants to edit the traveller's age (editing age data )
+                                {
+                                    cout << " Enter the updated age : " << endl ;
+                                    int newage ;
+                                    cin >> newage ;
+                                    travelerMap[usrname].age = newage;
+                                }
+                                if (numofdata == 5 ) // the admin wants to edit the traveller's nationality (editing nationality data )
+                                {
+                                    cout << " Enter the new nationality : " << endl ;
+                                    string newnation ;
+                                    cin >> newnation ;
+                                    travelerMap[usrname].nationality = newnation;
+
+                                }
+                                cout << "The traveller's data has been edited SUCCESSFULLY '') " << endl;
+
+                            }
+                            else if (op == 3 && torh ==2) //the user is host and the operation is editing (editing host)
+                            {
+                                int numofdata ;
+                                cout << "Enter the number of the required data to be edited : " << endl ;
+                                cin >> numofdata;
+                                if (numofdata == 1 ) // the admin wants to edit the host's name (editing full name data )
+                                {
+                                    cout << " Enter the new name : " << endl ;
+                                    string newname ;
+                                    cin >> newname ;
+                                    hostMap[usrname].fullname = newname;
+                                }
+                                if (numofdata == 2) // the admin wants to edit the host's emails (editing email data )
+                                {
+                                    cout << " Enter the new email : " << endl ;
+                                    string newemail ;
+                                    cin >> newemail ;
+                                    hostMap[usrname].email = newemail;
+                                }
+                                if (numofdata == 3) // the admin wants to edit the host's gender (editing gender data )
+                                {
+                                    cout << " Enter the updated gender : " << endl ;
+                                    char newgender;
+                                    cin >> newgender ;
+                                    hostMap[usrname].gender = newgender;
+                                }
+                                if (numofdata == 4) // the admin wants to edit the host's age (editing age data )
+                                {
+                                    cout << " Enter the updated age : " << endl ;
+                                    int newage ;
+                                    cin >> newage ;
+                                    hostMap[usrname].age = newage;
+                                }
+                                if (numofdata == 5 ) // the admin wants to edit the hosts's nationality (editing nationality data )
+                                {
+                                    cout << " Enter the new nationality : " << endl ;
+                                    string newnation ;
+                                    cin >> newnation ;
+                                    hostMap[usrname].nationality = newnation;
+
+                                }
+                                cout << "The Host's data has been edited SUCCESSFULLY '') " << endl;
+
+
+                            }
+
                         }
                     }
-
-
-                }
                 else {
                     cout << "Incorrect password please enter the correct password " << endl;
                     goto jumpC;
@@ -677,4 +771,5 @@ void Login(int torh  ) {
         }
 
 
+        }
     }
