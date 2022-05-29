@@ -2,9 +2,24 @@
 #include<string>
 #include<iostream>
 using namespace std;
+struct NoUserNameData
+{
+    string fullname;
+    string password;
+    string email;
+    string nationality;
+    char gender{};
+    int age{};
+
+    NoUserNameData();
+
+    NoUserNameData(const string &fullname, const string &password, const string &email, const string &nationality,
+                   char gender, int age);
+};
 class NewUser
 {
 public:
+
     const string &getUsername() const;
 
     const string &getPassword() const;

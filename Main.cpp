@@ -29,16 +29,15 @@ string filePaths[5] =
 };
 //These are the file paths to the text files 
 
-struct hostData
-{
-    string fullname;
-    string password;
-    string email;
-    string nationality;
-    string place;
-    char gender;
-    int age;
-};
+//struct hostData
+//{
+//    string fullname;
+//    string password;
+//    string email;
+//    string nationality;
+//    char gender;
+//    int age;
+//};
 //struct travelerData
 //{
 //    string fullname;
@@ -50,14 +49,12 @@ struct hostData
 //};
 struct NoUserNameData
 {
-
     string fullname;
     string password;
     string email;
     string nationality;
     char gender{};
     int age{};
-    queue<HostsPlaces> places;
 };
 
 
@@ -81,7 +78,6 @@ void writefile(string path, ofstream& file);
 void Signup(int torh);
 Travelers StructToTraveler(string UserName,NoUserNameData Struct);
 Host StructToHost(string UserName,NoUserNameData Struct);
-Admin StructToAdmin(string UserName,NoUserNameData Struct);
 int main() {
     ofstream enterData;
     ifstream readData;
@@ -208,7 +204,7 @@ int main() {
                 if (adminMap[usrname].getPassword() == pswrd) {
                     cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
                     helloAdmin:
-                    cout << "To View data press : 1\nTo Edit Data press : 2\nTo handle requests press : 3\n";
+                    cout << "To View data press : 1\n";
                     cin>>op;
                     if (op==1){
                         cout<<"Enter Username of User You want to view : ";
@@ -230,7 +226,7 @@ int main() {
                         else if (!hostMap[usrname].password.empty()){
                             Host host = StructToHost(usrname,hostMap[usrname]);
                             torh=2;
-                            if (pswrd==host.password){
+
                                 cout<<"-----------------------( Host Data )-----------------------"<<endl;
                                 cout<<"Full Name  : "<<host.getFullname()<<endl;
                                 cout<<"Email : "<<host.getEmail()<<endl;
@@ -238,12 +234,27 @@ int main() {
                                 cout<<"Age : "<<host.getAge()<<endl;
                                 cout<<"Nationality : "<<host.getNationality()<<endl;
                                 cout<<"Number of Places : "<<host.countPlaces()<<endl;
-
-                            }
+                                cout<<"--------------------------------------------------------"<<endl;
                         }
                         else{
                             cout<<" There is no user with this username :< "<<endl;
                             goto helloAdmin;
+                        }
+                        if (torh == 1 || torh ==2)  //Check if User is Host or Traveler
+                        {
+                            cout << "To Delete User press 2 \n To Edit User Press ";
+                            cin >> op;
+                            if (op == 2) {
+                                if (torh == 2) //User is host
+                                {
+                                    Admin::DeleteData(usrname, hostMap);
+                                }
+                                else if (torh == 1) // user is taveler
+                                {
+                                    Admin::DeleteData(usrname, travelerMap);
+                                } else
+                                    cout << "Error While Deleting!";
+                            }
                         }
                         }
                     else if (op==3){
@@ -351,11 +362,9 @@ HostsPlaces ReadPlaces()
     else{
       cout<< " Error !";
     }
-
-    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]), isConfirmed);
-
-
-
+float x= stof(read[4]);
+    HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]),isConfirmed);
+   // Push Queue Here <3
     return place;
 }
 /*both functions take the data read from the file and uses it to create the objects that are to be
@@ -561,10 +570,4 @@ Host StructToHost(string UserName,NoUserNameData Struct){
         Struct.places.pop();
     }
     return host;
-}
-Admin StructToAdmin(string UserName,NoUserNameData Struct){
-    Admin admin = Admin(UserName,Struct.fullname,
-                     Struct.password,Struct.email,
-                     Struct.nationality,Struct.gender,Struct.age);
-    return admin;
 }
