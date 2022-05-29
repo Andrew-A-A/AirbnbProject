@@ -8,9 +8,9 @@ Travelers::Travelers(string username, string fullname, string password, string e
 {
 }
 
-void Travelers::InsertTrip( string city, string start, string end, float mx, float mn, Travelers traveler)
+void Travelers::InsertTrip( string city, string start, string end, float mx, float mn, string tusername)
 {
-	TravelerTrips trip(traveler.username, city, start, end, mx, mn);
+	TravelerTrips trip(tusername, city, start, end, mx, mn);
 	trips.push(trip);
 }
 

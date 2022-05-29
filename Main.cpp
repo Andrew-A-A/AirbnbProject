@@ -105,16 +105,18 @@ int main() {
     if (sorl == 1) {
         Signup(torh);                   //signup and get data from user (Both travelers and hosts)
     } else if (sorl == 2) {
-        Login(torh);                    //Login and use application functionality (For Travelers , Hosts and Admins)
+
+        cout << "Do you want to login as a traveler or as a host or Admin?" << endl;
+        cout << "To Login as a traveler press 1. \nTo Login as a host press 2.\nTo Login as an Admin press 3. \n"
+             << endl;
+        cin >> torh;
+        Login(torh);
+
     }
 }
-
-// User-defined functions' definition
-
-/* Gets the line from file and divides the line into the fields that the object needs*/
 void stringop(string curr, int num)
 {
-    string s;      //variable gets Each word in line
+    string s;
     if (num == 0)
     {
         return;
@@ -123,14 +125,14 @@ void stringop(string curr, int num)
     {
         for (int i = 0; i <= curr.size(); i++)
         {
-            if (curr[i] == '%')
+            if (curr[i] == '%' || i == curr.size())
             {
-                read.push_back(s);  //Read word and push the variable value to read vector
-                s.clear();           //clear variable to read another word in same line
+                read.push_back(s);
+                s.clear();
                 continue;
             }
             else
-                s += curr[i];       //Concatenate character by character from the current line
+                s += curr[i];
         }
         return;
     }
@@ -165,7 +167,7 @@ void InsertHost(Host& host)
 /*Following Functions take the data read from the file and uses it to create the objects that are to be passed to the insert functions*/
 Travelers ReadTraveler()
 {
-    Travelers traveler(read[0], read[1], read[3], read[2], read[4], read[5][0], stoi(read[6]));
+    Travelers traveler(read[0], read[1], read[3], read[2], read[4], read[5][1], stoi(read[6]));
     /* username = read[0]
      fullname = read[1]
      email = read[2]
@@ -177,12 +179,12 @@ Travelers ReadTraveler()
 }
 Admin ReadAdmin()
 {
-    Admin admin(read[0], read[1], read[3], read[2], read[4], read[5][0], stoi(read[6]));
+    Admin admin(read[0], read[1], read[3], read[2], read[4], read[5][1], stoi(read[6]));
     return admin;
 }
 Host ReadHosts()
 {
-    Host host(read[0], read[1], read[2], read[3], read[4], read[5][0], stoi(read[6]));
+    Host host(read[0], read[1], read[2], read[3], read[4], read[5][1], stoi(read[6]));
     return host;
 }
 HostsPlaces ReadPlaces()
@@ -326,8 +328,15 @@ void Signup(int torh){
         string nationalty;
         char gndr;
         int year;
+
+        EnterUserName:
         cout << "Enter your username: " << endl;
         cin >> usrname;
+        if(travelerMap.count(usrname)==1 || hostMap.count(usrname)==1)
+        {
+            cout<<"Please enter a new username this one has been already used\n";
+            goto EnterUserName;
+        }
         write.push_back(usrname);               //add username to write vector
         cout << "Enter your fullname: " << endl;
         cin.ignore();
@@ -436,15 +445,10 @@ Host StructToHost(string UserName,NoUserNameData Struct){
 }
 
 //Login into program and start using its functionality (For Host , Traveler and Admin)
-void Login(int torh  ){
+void Login(int torh  ) {
     //Created stream to write data in file
     ofstream enterData;
     int op;                     //Operations Selector
-    cout << "Do you want to login as a traveler or as a host or Admin?" << endl;
-    cout << "To Login as a traveler press 1. \n"
-            "To Login as a host press 2.\n"
-            "To Login as an Admin press 3. \n"<< endl;
-    cin >> torh;
 
     //Traveler Case
     if (torh == 1) {
@@ -452,172 +456,225 @@ void Login(int torh  ){
         cout << "Please enter your username: " << endl;
         string usrname;
         cin >> usrname;
+
+        //Check that the traveler has an account
         if (!travelerMap[usrname].password.empty()) {
             jumpA:
             cout << "Enter your password: " << endl;
             string pswrd;
             cin >> pswrd;
+
+            //Check that the user entered his password correctly
             if (travelerMap[usrname].password == pswrd) {
                 cout << "Hello " << travelerMap[usrname].fullname << " :) Would you like to book a new trip? "
                      << endl;
-                HelloTraveler:
-                cout << "To book a new trip press : 1 "<<endl;
-                cin>>op;
-                if (op==1){
-                    cout<<"Enter Start day for your stay";
+                int triporback;
+                cout << "To book a new trip press 1 / To go back press 0" << endl;
+                cin >> triporback;
 
-
-                }
-                else{
-                    cout<<"Error !";
-                    goto HelloTraveler;
-                }
-
-            } else {
-                cout << "Incorrect password please enter the correct password " << endl;
-                goto jumpA;
-            }
-        } else {
-            cout << "Please sign up first to be able to book a trip :( " << endl;
-        }
-
-    }
-    //Host Case
-    if (torh == 2) {
-
-        cout << "Please enter your username: " << endl;
-        string usrname;
-        cin >> usrname;
-        if (!hostMap[usrname].password.empty()) {
-            jumpB:
-            cout << "Enter your password: " << endl;
-            string pswrd;
-            cin >> pswrd;
-            if (hostMap[usrname].password == pswrd) {
-                cout << "Hello " << hostMap[usrname].fullname << " :) Would you like to add new place? " << endl;
-                cout << "To add a place press 1\n" ;
-                cin>>op;
-                if (op==1){
-                    Host host(usrname,hostMap[usrname].fullname,
-                              hostMap[usrname].password,
-                              hostMap[usrname].email,hostMap[usrname].nationality,
-                              hostMap[usrname].gender,hostMap[usrname].age);
-                    cout<<"-------------------<Enter Place Data>-------------------"<<endl;
-                    write.push_back("HostPlace");
+                //Allow the user to book a new trip and get the details of the trip from the user
+                if (triporback == 1) {
+                    write.push_back("Trips");
                     write.push_back(usrname);
-                    cout<<"Where place is ? : \n";
+                    cout << "Write down your dream city :" << endl;
                     string city;
-                    cin>>city;
+                    cin >> city;
                     write.push_back(city);
-                    cout<<"When will your place be available ? : \n";
-                    string startDate;
-                    cin>>startDate;
-                    write.push_back(startDate);
-                    cout<<"When won't your place be available ? : \n";
-                    string endDate;
-                    cin>>endDate;
-                    write.push_back(endDate);
-                    cout<<"Set Rent Price : \n";
-                    float price;
-                    cin>>price;
-                    write.push_back(to_string(price));
-                    write.push_back("0");
-                    host.AddPlaces(host,city,startDate,endDate,price);
-                    string currstring= filePaths[3];
-                    writefile(currstring.c_str(),enterData);
+                    cout << "Enter your start and end dates :" << endl;
+                    cout << "Start date : " << endl;
+                    string start;
+                    cin >> start;
+                    write.push_back(start);
+                    cout << "End date :" << endl;
+                    string end;
+                    cin >> end;
+                    write.push_back(end);
+                    cout << "EMPTY YOUR POCKETS HERE and write down the maximum and minimum budget for your trip : "
+                         << endl;
+                    cout << " Maximum price  : " << endl;
+                    float mx;
+                    cin >> mx;
+                    string maxnum;
+                    maxnum = to_string(mx);
+                    write.push_back(maxnum);
+                    cout << " Minimum price : " << endl;
+                    float mn;
+                    cin >> mn;
+                    string minnum;
+                    minnum = to_string(mn);
+                    write.push_back(minnum);
+                    //Create Travelers object to be albe to call the InsertTrip function
+                    Travelers travelerr(usrname, travelerMap[usrname].fullname, travelerMap[usrname].password,
+                                        travelerMap[usrname].email, travelerMap[usrname].nationality,
+                                        travelerMap[usrname].gender, travelerMap[usrname].age);
+
+                    //Call the InsertTrip function and pass the needed parameters to instantiate a new object of TravelerTrips class
+                    travelerr.InsertTrip(city, start, end, mx, mn, usrname);
+                    writefile(filePaths[2], enterData);
+                } else {
+                    cout << "Incorrect password please enter the correct password " << endl;
+                    goto jumpA;
+                }
+            }
+            else {
+                //For new users allow them to sing up/create an account first
+                cout << "Please sign up first to be able to book a trip :( " << endl;
+                Signup(1);
+            }
+
+        }
+    }
+        //Host Case
+        if (torh == 2) {
+            //Allow the host to login to add a new place
+            cout << "Please enter your username: " << endl;
+            string usrname;
+            cin >> usrname;
+
+            //Check that the host has an account
+            if (!hostMap.count(usrname)==0) {
+                jumpB:
+                cout << "Enter your password: " << endl;
+                string pswrd;
+                cin >> pswrd;
+
+                //Check that the host has entered the correct password
+                if (hostMap[usrname].password == pswrd) {
+                    cout << "Hello " << hostMap[usrname].fullname << " :) Would you like to add new place? " << endl;
+                    cout << "To add a place press 1\n";
+                    cin >> op;
+                    if (op == 1) {
+
+                        //Create an object from Host Class to be able to call AddPlaces function
+                        Host host(usrname, hostMap[usrname].fullname,
+                                  hostMap[usrname].password,
+                                  hostMap[usrname].email, hostMap[usrname].nationality,
+                                  hostMap[usrname].gender, hostMap[usrname].age);
+                        cout << "-------------------<Enter Place Data>-------------------" << endl;
+                        write.push_back("HostPlace");
+                        write.push_back(usrname);
+                        cout << "Where place is ? : \n";
+                        string city;
+                        cin >> city;
+                        write.push_back(city);
+                        cout << "When will your place be available ? : \n";
+                        string startDate;
+                        cin >> startDate;
+                        write.push_back(startDate);
+                        cout << "When won't your place be available ? : \n";
+                        string endDate;
+                        cin >> endDate;
+                        write.push_back(endDate);
+                        cout << "Set Rent Price : \n";
+                        float price;
+                        cin >> price;
+                        write.push_back(to_string(price));
+                        write.push_back("0");
+
+                        //Call of AddPlaces Function
+                        host.AddPlaces(host, city, startDate, endDate, price);
+                        string currstring = filePaths[3];
+                        writefile(currstring.c_str(), enterData);
+                    }
+                } else {
+                    cout << "Incorrect password please enter the correct password " << endl;
+                    goto jumpB;
                 }
             } else {
-                cout << "Incorrect password please enter the correct password " << endl;
-                goto jumpB;
+                //For new hosts allow them to sing up/create an account first
+                cout << "Please sign up first to be able to add place :( " << endl;
+                Signup(2);
             }
-        } else {
-            cout << "Please sign up first to be able to add place :( " << endl;
+
         }
+        //Admin Case
+        if (torh == 3) {
+            //Allow the Admin to login and give access to alter data
+            cout << "Please enter your username: " << endl;
+            string usrname;
+            cin >> usrname;
+            if (!adminMap.count(usrname)==0) {
+                jumpC:
+                cout << "Enter your password: " << endl;
+                string pswrd;
+                cin >> pswrd;
 
-    }
-    //Admin Case
-    if (torh == 3) {
+                //Check for the Admin's password has been entered correctly
+                if (adminMap[usrname].getPassword() == pswrd) {
+                    cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
+                    helloAdmin:
+                    cout << "To View data press : 1\n";
+                    cin >> op;
+                    if (op == 1) {
+                        cout << "Enter Username of User You want to view : ";
+                        cin >> usrname;
 
-        cout << "Please enter your username: " << endl;
-        string usrname;
-        cin >> usrname;
-        if (!adminMap[usrname].getUsername().empty()) {
-            jumpC:
-            cout << "Enter your password: " << endl;
-            string pswrd;
-            cin >> pswrd;
-            if (adminMap[usrname].getPassword() == pswrd) {
-                cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
-                helloAdmin:
-                cout << "To View data press : 1\n";
-                cin>>op;
-                if (op==1) {
-                    cout << "Enter Username of User You want to view : ";
-                    cin >> usrname;
-                    if (!travelerMap[usrname].password.empty()) {
-                        Travelers traveler = StructToTraveler(usrname, travelerMap[usrname]);
-                        torh = 1;
-                        cout << "Enter Password : ";
-                        cin >> pswrd;
-                        if (pswrd == traveler.password) {
+                        //Get the data of the entered username to allow admin to apply some changes for this account
+                        if (!travelerMap.count(usrname)==0) {
+                            Travelers traveler = StructToTraveler(usrname, travelerMap[usrname]);
+                            torh = 1;
+
                             cout << "-----------------------( Traveler Data )-----------------------" << endl;
                             cout << "Full Name  : " << traveler.getFullname() << endl;
                             cout << "Email : " << traveler.getEmail() << endl;
                             cout << "Gender : " << traveler.getGender() << endl;
                             cout << "Age : " << traveler.getAge() << endl;
                             cout << "Nationality : " << traveler.getNationality() << endl;
-                        }
-                    } else if (!hostMap[usrname].password.empty()) {
-                        Host host = StructToHost(usrname, hostMap[usrname]);
-                        torh = 2;
+                            cout << "--------------------------------------------------------" << endl;
 
-                        cout << "-----------------------( Host Data )-----------------------" << endl;
-                        cout << "Full Name  : " << host.getFullname() << endl;
-                        cout << "Email : " << host.getEmail() << endl;
-                        cout << "Gender : " << host.getGender() << endl;
-                        cout << "Age : " << host.getAge() << endl;
-                        cout << "Nationality : " << host.getNationality() << endl;
-                        cout << "Number of Places : " << host.countPlaces() << endl;
-                        cout << "--------------------------------------------------------" << endl;
-                    } else {
-                        cout << " There is no user with this username :< " << endl;
-                        goto helloAdmin;
-                    }
-                    if (torh == 1 || torh == 2)  //Check if User is Host or Traveler
-                    {
-                        cout<< "To Delete User press 2 \nTo Edit User press 3\n";
-                        if (torh==2) {
-                            cout << "To Handle host's request press 4\n";
-                        }
-                        cin >> op;
-                        if (op == 2) {
-                            if (torh == 2) //User is host
-                            {
-                                Admin::DeleteData(usrname, hostMap);
-                            } else if (torh == 1) // user is taveler
-                            {
-                                Admin::DeleteData(usrname, travelerMap);
-                            } else
-                                cout << "Error While Deleting!";
-                        } else if (op == 4 && torh == 2) {
+                        } else if (!hostMap.count(usrname)) {
                             Host host = StructToHost(usrname, hostMap[usrname]);
-                            Admin admin = adminMap[usrname];
-                            admin.RequestHost(hostMap[usrname].places, host);
+                            torh = 2;
+
+                            cout << "-----------------------( Host Data )-----------------------" << endl;
+                            cout << "Full Name  : " << host.getFullname() << endl;
+                            cout << "Email : " << host.getEmail() << endl;
+                            cout << "Gender : " << host.getGender() << endl;
+                            cout << "Age : " << host.getAge() << endl;
+                            cout << "Nationality : " << host.getNationality() << endl;
+                            cout << "Number of Places : " << host.countPlaces() << endl;
+                            cout << "--------------------------------------------------------" << endl;
+                        } else {
+                            cout << " There is no user with this username :< " << endl;
+                            goto helloAdmin;
+                        }
+                        if (torh == 1 || torh == 2)  //Check if User is Host or Traveler
+                        {
+                            cout << "To Delete User press 2 \nTo Edit User press 3\n";
+                            if (torh == 2) {
+                                cout << "To Handle host's request press 4\n";
+                            }
+                            cin >> op;
+                            //op=2 allows admin to delete data the selected user
+                            if (op == 2) {
+                                if (torh == 2) //User is host
+                                {
+                                    Admin::DeleteData(usrname, hostMap);
+                                } else if (torh == 1) // user is taveler
+                                {
+                                    Admin::DeleteData(usrname, travelerMap);
+                                } else
+                                    cout << "Error While Deleting!";
+                            } else if (op == 4 && torh == 2) {
+                                Host host = StructToHost(usrname, hostMap[usrname]);
+                                Admin admin = adminMap[usrname];
+                                admin.RequestHost(hostMap[usrname].places, host);
+                            }
                         }
                     }
+
+
+                }
+                else {
+                    cout << "Incorrect password please enter the correct password " << endl;
+                    goto jumpC;
                 }
 
-
             }
-
-        } else {
-            cout << "Incorrect password please enter the correct password " << endl;
-            goto jumpC;
+            else {
+                cout << "There is no admin with this user name " << endl;
+            }
         }
-    }
-    else {
-        cout << "There is no admin with this user name " << endl;
-    }
 
 
-}
+    }
