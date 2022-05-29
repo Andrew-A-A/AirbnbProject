@@ -3,14 +3,23 @@
 //
 
 #include "Admin.h"
+#include "Host.h"
+#include "HostsPlaces.h"
 
 Admin::Admin():NewUser() {}
 
-void Admin::DeleteData() {
+void Admin::DeleteData(string usr,unordered_map<string ,struct NoUserNameData> &map){
+    if (map[usr].password.empty()){
+        cout<<"There is no user with this name :( ";
+    }
+    else{
+        cout<<"User "<<usr<<" Deleted :> \n";
 
+        map.erase(usr);
+    }
 }
 
-void Admin::Display(string *) {
+void Admin::Display() {
 
 }
 

@@ -47,15 +47,15 @@ string filePaths[5] =
 //    char gender;
 //    int age;
 //};
-struct NoUserNameData
-{
-    string fullname;
-    string password;
-    string email;
-    string nationality;
-    char gender{};
-    int age{};
-};
+//struct NoUserNameData
+//{
+//    string fullname;
+//    string password;
+//    string email;
+//    string nationality;
+//    char gender{};
+//    int age{};
+//};
 
 
 unordered_map<string, NoUserNameData>hostMap;
@@ -204,7 +204,7 @@ int main() {
                 if (adminMap[usrname].getPassword() == pswrd) {
                     cout << "Hello " << adminMap[usrname].getFullname() << " :) " << endl;
                     helloAdmin:
-                    cout << "To View data press : 1\nTo Edit Data press : 2\n";
+                    cout << "To View data press : 1\n";
                     cin>>op;
                     if (op==1){
                         cout<<"Enter Username of User You want to view : ";
@@ -212,21 +212,20 @@ int main() {
                         if (!travelerMap[usrname].password.empty()) {
                             Travelers traveler=StructToTraveler(usrname,travelerMap[usrname]);
                             torh=1;
-                            cout<<"Enter Password : ";
-                            cin>>pswrd;
-                            if (pswrd==traveler.password){
+
                                 cout<<"-----------------------( Traveler Data )-----------------------"<<endl;
                                 cout<<"Full Name  : "<<traveler.getFullname()<<endl;
                                 cout<<"Email : "<<traveler.getEmail()<<endl;
                                 cout<<"Gender : "<<traveler.getGender()<<endl;
                                 cout<<"Age : "<<traveler.getAge()<<endl;
                                 cout<<"Nationality : "<<traveler.getNationality()<<endl;
-                            }
+                                cout<<"--------------------------------------------------------"<<endl;
+
                         }
                         else if (!hostMap[usrname].password.empty()){
                             Host host = StructToHost(usrname,hostMap[usrname]);
                             torh=2;
-                            if (pswrd==host.password){
+
                                 cout<<"-----------------------( Host Data )-----------------------"<<endl;
                                 cout<<"Full Name  : "<<host.getFullname()<<endl;
                                 cout<<"Email : "<<host.getEmail()<<endl;
@@ -234,11 +233,27 @@ int main() {
                                 cout<<"Age : "<<host.getAge()<<endl;
                                 cout<<"Nationality : "<<host.getNationality()<<endl;
                                 cout<<"Number of Places : "<<host.countPlaces()<<endl;
-                            }
+                                cout<<"--------------------------------------------------------"<<endl;
                         }
                         else{
                             cout<<" There is no user with this username :< "<<endl;
                             goto helloAdmin;
+                        }
+                        if (torh == 1 || torh ==2)  //Check if User is Host or Traveler
+                        {
+                            cout << "To Delete User press 2 \n To Edit User Press ";
+                            cin >> op;
+                            if (op == 2) {
+                                if (torh == 2) //User is host
+                                {
+                                    Admin::DeleteData(usrname, hostMap);
+                                }
+                                else if (torh == 1) // user is taveler
+                                {
+                                    Admin::DeleteData(usrname, travelerMap);
+                                } else
+                                    cout << "Error While Deleting!";
+                            }
                         }
                         }
 

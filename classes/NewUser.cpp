@@ -46,3 +46,10 @@ int NewUser::getAge() const {
 }
 
 
+NoUserNameData::NoUserNameData(const string &fullname, const string &password, const string &email,
+                               const string &nationality, char gender, int age) : fullname(fullname),
+                                                                                  password(password), email(email),
+                                                                                  nationality(nationality),
+                                                                                  gender(gender), age(age) {}
+
+NoUserNameData::NoUserNameData() {}

@@ -5,19 +5,24 @@
 #ifndef AIRBNBPROJECT_ADMIN_H
 #define AIRBNBPROJECT_ADMIN_H
 #include "NewUser.h"
+#include "Host.h"
+#include "HostsPlaces.h"
+#include<unordered_map>
 class Admin: NewUser {
 public:
-    const string &getUsername() const;
-    const string &getPassword() const;
-    const string &getFullname() const;
     Admin();
     Admin(string username, string fullname,string password, string email,
           string nationality, char gender, int age);
 
 
-    void DeleteData();
-    void Display(string[]);
+    static void DeleteData(string usr ,unordered_map<string,NoUserNameData> &map);
+    static void Display();
     void Edit(string[]);
+
+    //Getters
+    const string &getUsername() const;
+    const string &getPassword() const;
+    const string &getFullname() const;
 };
 
 
