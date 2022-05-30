@@ -6,6 +6,7 @@
 #define AIRBNBPROJECT_ADMIN_H
 #include "NewUser.h"
 #include "Host.h"
+#include "Travelers.h"
 #include "HostsPlaces.h"
 #include<unordered_map>
 #include <map>
@@ -17,10 +18,11 @@ public:
           string nationality, char gender, int age);
 
 
-    static void DeleteData(string usr ,unordered_map<string,NoUserNameData> &map);
+    static void DeleteData(string usr ,unordered_map<string,Host> &map);
+    static void DeleteData(string usr ,unordered_map<string,Travelers> &map);
     static void Display();
     void Edit(string[]);
-    map <pair<string , int>, HostsPlaces> RequestHost(queue<HostsPlaces> , Host &host);
+    multimap<string , HostsPlaces> RequestHost(queue<HostsPlaces> , Host &host);
     //Getters
     const string &getUsername() const;
     const string &getPassword() const;

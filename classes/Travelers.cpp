@@ -13,5 +13,11 @@ void Travelers::InsertTrip( string city, string start, string end, float mx, flo
 	TravelerTrips trip(tusername, city, start, end, mx, mn);
 	trips.push(trip);
 }
-
+void Travelers::pushtrip(TravelerTrips trip) {
+    trips.push(trip);
+}
+TravelerTrips Travelers::top() {
+    trip=trips.top();
+    return trip;
+}
 

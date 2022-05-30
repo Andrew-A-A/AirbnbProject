@@ -11,3 +11,32 @@ TravelerTrips::TravelerTrips(string Tusername, string city, string start, string
 }
 
 TravelerTrips::TravelerTrips() {}
+
+
+
+
+
+
+const string &TravelerTrips::getTravelerusername() const {
+    return Travelerusername;
+}
+
+const string &TravelerTrips::getCity() const {
+    return city;
+}
+
+const string &TravelerTrips::getStartdate() const {
+    return startdate;
+}
+
+const string &TravelerTrips::getEnddate() const {
+    return enddate;
+}
+
+float TravelerTrips::getMxprice() const {
+    return mxprice;
+}
+
+float TravelerTrips::getMnprice() const {
+    return mnprice;
+}

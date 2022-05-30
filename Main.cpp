@@ -61,8 +61,8 @@ string filePaths[5] =
 
 /* created the struct so that to pass the map objects of structured the key will be the username
 the value will be the struct which contains the rest of the data in the object */
-unordered_map<string, NoUserNameData>hostMap;
-unordered_map<string, NoUserNameData>travelerMap;
+unordered_map<string, Host>hostMap;
+unordered_map<string, Travelers>travelerMap;
 unordered_map<string, Admin>adminMap;
 
 
@@ -72,14 +72,15 @@ void InsertTraveler(Travelers& traveler);
 void InsertHost(Host& host);
 Travelers ReadTraveler();
 Host ReadHosts();
-Admin ReadAdmin();
+Admin  ReadAdmin();
 HostsPlaces ReadPlaces();
+TravelerTrips Readtrips();
 int countLine(string path, ifstream& file);
 void readfile(string path, ifstream& file, int y);
 void writefile(string path, ofstream& file);
 void Signup(int torh);
-Travelers StructToTraveler(string UserName,NoUserNameData Struct);
-Host StructToHost(string UserName,NoUserNameData Struct);
+Travelers StructToTraveler(string UserName,Travelers Struct);
+Host StructToHost(string UserName,Host Struct);
 void Login(int torh);
 
 
@@ -95,6 +96,9 @@ int main() {
     readfile((filePaths[4]), readData, aLines);
     int pLines = countLine(filePaths[3], readData);
     readfile((filePaths[3]), readData, pLines);
+    int triplines= countLine( filePaths[2],readData);
+    readfile(filePaths[2],readData, triplines);
+
 
     int sorl, torh;             //sign up or login , traveler or host
 
@@ -142,7 +146,7 @@ void stringop(string curr, int num)
 /*both insert functions create the struct objects and pushes them to the map*/
 void InsertTraveler(Travelers& traveler)
 {
-    NoUserNameData data;                //Declare struct object
+    Travelers data;                //Declare struct object
     data.fullname = traveler.fullname;
     data.age = traveler.age;
     data.email = traveler.email;
@@ -153,7 +157,7 @@ void InsertTraveler(Travelers& traveler)
 }
 void InsertHost(Host& host)
 {
-    NoUserNameData data;      //Declare struct object
+    Host data;      //Declare struct object
     data.fullname = host.fullname;
     data.age = host.age;
     data.email = host.email;
@@ -176,6 +180,12 @@ Travelers ReadTraveler()
      gender = read[5][0]
      age = String To Integer(read[6])*/
     return traveler;
+}
+
+TravelerTrips Readtrips()
+{
+    TravelerTrips trips(read[0],read[1],read[2],read[3],stof(read[4]), stof(read[5]));
+    return trips;
 }
 Admin ReadAdmin()
 {
@@ -201,7 +211,10 @@ HostsPlaces ReadPlaces()
     }
 float x= stof(read[4]);
     HostsPlaces place(read[0], read[1], read[2], read[3],stoi(read[4]),isConfirmed);
-   // Push Queue Here <3
+    if(isConfirmed!=1)
+    hostMap[place.getHostusername()].places.push(place);
+    else
+        hostMap[place.getHostusername()].confirmed_places.push_back(place);
     return place;
 }
 
@@ -256,13 +269,19 @@ void readfile(string path, ifstream& file, int y)
             else if (path == filePaths[3] && countlines > 0)
             {
                HostsPlaces place = ReadPlaces();
-               hostMap[place.Hostusername].places.push(place);
+              // hostMap[place.Hostusername].places.push(place);
 
             }
             else if (path == filePaths[4] && countlines > 0)
             {
               Admin admin=ReadAdmin();
               adminMap[admin.getUsername()]=admin;
+            }
+            else if(path== filePaths[2] && countlines>0) {
+                TravelerTrips trips= Readtrips();
+                travelerMap[trips.getTravelerusername()];
+               // Travelers travelers(trips.getTravelerusername(),travelerMap[trips.getTravelerusername()].fullname,travelerMap[trips.getTravelerusername()].password,travelerMap[trips.getTravelerusername()].email,travelerMap[trips.getTravelerusername()].nationality,travelerMap[trips.getTravelerusername()].gender,travelerMap[trips.getTravelerusername()].age);
+                travelerMap[trips.getTravelerusername()].pushtrip(trips);
             }
             countlines++;
         }
@@ -429,7 +448,7 @@ void Signup(int torh){
 }
 
 //Functions convert NoUserNamedData Struct Objects To Object of classes (Traveler & Host)
-Travelers StructToTraveler(string UserName,NoUserNameData Struct){
+Travelers StructToTraveler(string UserName,Travelers Struct){
 
     //Get Data From Struct and give it to Traveler constructor
 
@@ -438,7 +457,7 @@ Travelers StructToTraveler(string UserName,NoUserNameData Struct){
                                    Struct.nationality,Struct.gender,Struct.age);
     return traveler;
 }
-Host StructToHost(string UserName,NoUserNameData Struct){
+Host StructToHost(string UserName,Host Struct){
     //Get Data From Struct and give it to Host constructor
     Host host = Host(UserName,Struct.fullname,
                                    Struct.password,Struct.email,
@@ -475,6 +494,13 @@ void Login(int torh  ) {
             if (travelerMap[usrname].password == pswrd) {
                 cout << "Hello " << travelerMap[usrname].fullname << " :) Would you like to book a new trip? "
                      << endl;
+//                Travelers t (usrname, travelerMap[usrname].fullname, travelerMap[usrname].password,
+//                                    travelerMap[usrname].email, travelerMap[usrname].nationality,
+//                                    travelerMap[usrname].gender, travelerMap[usrname].age);
+
+               // cout<< travelerMap[usrname].top().getCity()<<endl;
+               cout<<travelerMap[usrname].trips.empty()
+               <<endl;
                 int triporback;
                 cout << "To book a new trip press 1 / To go back press 0" << endl;
                 cin >> triporback;
@@ -510,6 +536,7 @@ void Login(int torh  ) {
                     string minnum;
                     minnum = to_string(mn);
                     write.push_back(minnum);
+
                     //Create Travelers object to be albe to call the InsertTrip function
                     Travelers travelerr(usrname, travelerMap[usrname].fullname, travelerMap[usrname].password,
                                         travelerMap[usrname].email, travelerMap[usrname].nationality,
@@ -526,7 +553,6 @@ void Login(int torh  ) {
             else {
                 //For new users allow them to sing up/create an account first
                 cout << "Please sign up first to be able to book a trip :( " << endl;
-                Signup(1);
             }
 
         }
@@ -617,7 +643,7 @@ void Login(int torh  ) {
                         cin >> usrname;
 
                         //Get the data of the entered username to allow admin to apply some changes for this account
-                        if (!travelerMap.count(usrname)==0) {
+                        if (travelerMap.count(usrname)!=0) {
                             Travelers traveler = StructToTraveler(usrname, travelerMap[usrname]);
                             torh = 1;
 
@@ -629,7 +655,8 @@ void Login(int torh  ) {
                             cout << "5) Nationality : " << traveler.getNationality() << endl;
                             cout << "--------------------------------------------------------" << endl;
 
-                        } else if (!hostMap.count(usrname)) {
+                        }
+                        else if (hostMap.count(usrname)!=0) {
                             Host host = StructToHost(usrname, hostMap[usrname]);
                             torh = 2;
 
@@ -665,7 +692,7 @@ void Login(int torh  ) {
                             } else if (op == 4 && torh == 2) {
                                 Host host = StructToHost(usrname, hostMap[usrname]);
                                 Admin admin = adminMap[usrname];
-                                admin.RequestHost(hostMap[usrname].places, host);
+                                multimap<string , HostsPlaces>  wezza =  admin.RequestHost(hostMap[usrname].places, host);
                             }
                             else if (op == 3 && torh ==1) //the user is traveller and the operation is editing (editing host)
                             {

@@ -3,7 +3,6 @@ MonicaSameh% rome% 1/9% 10/9% 2500.000000% 1500.000000%
 AndrewAdel% Paris% 22/6% 1/7% 3000.000000% 1500.000000%
 AndrewAdel% Greece% 8/6% 22/6% 5000.000000% 2000.000000%
 AndrewAdel% spain% 8/6% 22/6% 500.000000% 500.000000%
-Username% City% StratDate% EndDate% MaxBudget% MinBudget%
 MonicaSameh% rome% 1/9% 10/9% 2500.000000% 1500.000000%
 AndrewAdel% Paris% 22/6% 1/7% 3000.000000% 1500.000000%
 AndrewAdel% Greece% 8/6% 22/6% 5000.000000% 2000.000000%

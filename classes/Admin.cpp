@@ -8,15 +8,24 @@
 
 Admin::Admin():NewUser() {}
 
-void Admin::DeleteData(string usr,unordered_map<string ,struct NoUserNameData> &map){
-    if (map[usr].password.empty()){
-        cout<<"There is no user with this name :( ";
-    }
-    else{
-        cout<<"User "<<usr<<" Deleted :> \n";
+void Admin::DeleteData(string usr,unordered_map<string ,Host > &map) {
+    if (map[usr].password.empty()) {
+        cout << "There is no user with this name :( ";
+    } else {
+        cout << "User " << usr << " Deleted :> \n";
 
         map.erase(usr);
     }
+}
+void Admin::DeleteData(string usr,unordered_map<string ,Travelers > &map){
+        if (map[usr].password.empty()){
+            cout<<"There is no user with this name :( ";
+        }
+        else{
+            cout<<"User "<<usr<<" Deleted :> \n";
+
+            map.erase(usr);
+        }
 }
 
 void Admin::Display() {
@@ -44,9 +53,9 @@ const string &Admin::getFullname() const {
     return NewUser::getFullname();
 }
 
-map <pair<string , int>, HostsPlaces> Admin::RequestHost(queue<HostsPlaces> , Host &host) {
+multimap<string , HostsPlaces> Admin::RequestHost(queue<HostsPlaces> , Host &host) {
     int size=host.places.size();
-
+cout<<size;
     for (int i = 0; i < size ; ++i) {
         cout<< "Host " <<host.places.front().Hostusername <<" wants to add a place in "<< host.places.front().City<< " with price "<<host.places.front().pricepernight<<"L.E. per night \n";
         cout<<"To accept the host's request press 1 \nTo ignore the host's request press 2 ";

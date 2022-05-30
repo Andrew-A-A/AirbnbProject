@@ -19,6 +19,19 @@ private:
 	string enddate;
 	float mxprice, mnprice;
 public:
+    const string &getTravelerusername() const;
+
+    const string &getCity() const;
+
+    const string &getStartdate() const;
+
+    const string &getEnddate() const;
+
+    float getMxprice() const;
+
+    float getMnprice() const;
+
+public:
     StayRange stayRange;
     TravelerTrips();
 
