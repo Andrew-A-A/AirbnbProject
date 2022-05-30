@@ -32,9 +32,10 @@ void Admin::Display() {
 
 }
 
-void Admin::Edit(string *) {
+//void Admin::Edittraaveller(int op, int torh) {}
 
-}
+
+
 
 Admin::Admin(string username, string fullname, string password, string email, string nationality, char gender, int age)
         : NewUser(username, fullname, password, email, nationality, gender, age) {
@@ -70,10 +71,10 @@ cout<<size;
             host.places.pop();
         }
     }
-    map <pair<string , int>, HostsPlaces> available_places;
+    multimap <string , HostsPlaces> available_places;
     vector<HostsPlaces>avail=host.confirmed_places;
     for (int i = 0; i < avail.size(); ++i) {
-        available_places[{avail[i].City , avail[i].pricepernight}];
+        available_places.insert({avail[i].City , avail[i]});
     }
     return available_places;
 }

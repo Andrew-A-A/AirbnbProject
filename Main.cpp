@@ -82,7 +82,8 @@ void Signup(int torh);
 Travelers StructToTraveler(string UserName,Travelers Struct);
 Host StructToHost(string UserName,Host Struct);
 void Login(int torh);
-
+void Edittraveller (int op , int torh, string usrname);
+void Edithost (int op , int torh, string usrname);
 
 int main() {
     //Created stream to read data from file
@@ -226,7 +227,7 @@ int countLine(string path, ifstream& file)
     file.open(path, ios::in);
     if (file.is_open())
     {
-        while (!file.eof())
+        while (!file.eof()) //last line in file
         {
             getline(file, line);
             x++;
@@ -474,6 +475,8 @@ Host StructToHost(string UserName,Host Struct){
 void Login(int torh  ) {
     //Created stream to write data in file
     ofstream enterData;
+    ifstream fin;
+    ofstream temp;
     int op;                     //Operations Selector
 
     //Traveler Case
@@ -696,107 +699,262 @@ void Login(int torh  ) {
                             }
                             else if (op == 3 && torh ==1) //the user is traveller and the operation is editing (editing host)
                             {
-                                int numofdata ;
-                                cout << "Enter the number of the required data to be edited : " << endl ;
-                                cin >> numofdata;
-                                if (numofdata == 1 ) // the admin wants to edit the traveller's name (editing full name data )
-                                {
-                                    cout << " Enter the new name : " << endl ;
-                                    string newname ;
-                                    cin >> newname ;
-                                    travelerMap[usrname].fullname = newname;
-                                }
-                                if (numofdata == 2) // the admin wants to edit the traveller's emails (editing email data )
-                                {
-                                    cout << " Enter the new email : " << endl ;
-                                    string newemail ;
-                                    cin >> newemail ;
-                                    travelerMap[usrname].email = newemail;
-                                }
-                                if (numofdata == 3) // the admin wants to edit the traveller's gender (editing gender data )
-                                {
-                                    cout << " Enter the updated gender : " << endl ;
-                                    char newgender;
-                                    cin >> newgender ;
-                                    travelerMap[usrname].gender = newgender;
-                                }
-                                if (numofdata == 4) // the admin wants to edit the traveller's age (editing age data )
-                                {
-                                    cout << " Enter the updated age : " << endl ;
-                                    int newage ;
-                                    cin >> newage ;
-                                    travelerMap[usrname].age = newage;
-                                }
-                                if (numofdata == 5 ) // the admin wants to edit the traveller's nationality (editing nationality data )
-                                {
-                                    cout << " Enter the new nationality : " << endl ;
-                                    string newnation ;
-                                    cin >> newnation ;
-                                    travelerMap[usrname].nationality = newnation;
-
-                                }
+                                Edittraveller(op,torh,usrname);
                                 cout << "The traveller's data has been edited SUCCESSFULLY '') " << endl;
-
                             }
                             else if (op == 3 && torh ==2) //the user is host and the operation is editing (editing host)
                             {
-                                int numofdata ;
-                                cout << "Enter the number of the required data to be edited : " << endl ;
-                                cin >> numofdata;
-                                if (numofdata == 1 ) // the admin wants to edit the host's name (editing full name data )
-                                {
-                                    cout << " Enter the new name : " << endl ;
-                                    string newname ;
-                                    cin >> newname ;
-                                    hostMap[usrname].fullname = newname;
-                                }
-                                if (numofdata == 2) // the admin wants to edit the host's emails (editing email data )
-                                {
-                                    cout << " Enter the new email : " << endl ;
-                                    string newemail ;
-                                    cin >> newemail ;
-                                    hostMap[usrname].email = newemail;
-                                }
-                                if (numofdata == 3) // the admin wants to edit the host's gender (editing gender data )
-                                {
-                                    cout << " Enter the updated gender : " << endl ;
-                                    char newgender;
-                                    cin >> newgender ;
-                                    hostMap[usrname].gender = newgender;
-                                }
-                                if (numofdata == 4) // the admin wants to edit the host's age (editing age data )
-                                {
-                                    cout << " Enter the updated age : " << endl ;
-                                    int newage ;
-                                    cin >> newage ;
-                                    hostMap[usrname].age = newage;
-                                }
-                                if (numofdata == 5 ) // the admin wants to edit the hosts's nationality (editing nationality data )
-                                {
-                                    cout << " Enter the new nationality : " << endl ;
-                                    string newnation ;
-                                    cin >> newnation ;
-                                    hostMap[usrname].nationality = newnation;
-
-                                }
+                                Edithost(op ,torh ,usrname);
                                 cout << "The Host's data has been edited SUCCESSFULLY '') " << endl;
-
-
                             }
-
                         }
                     }
                 else {
                     cout << "Incorrect password please enter the correct password " << endl;
                     goto jumpC;
                 }
-
             }
             else {
                 cout << "There is no admin with this user name " << endl;
             }
         }
+        }
+    }
+
+    void Edittraveller (int op , int torh, string usrname){
+        int numofdata ;
+        ofstream enterData;
+        cout << "Enter the number of the required data to be edited : " << endl ;
+        cin >> numofdata;
+        if (numofdata == 1 ) // the admin wants to edit the traveller's name (editing full name data )
+        {
+            cout << " Enter the new name : " << endl ;
+            string newname ;
+            cin >> newname ;
+            travelerMap[usrname].fullname = newname;
+
+            write.push_back("Edit : ");
+            write.push_back(usrname);
+            write.push_back(travelerMap[usrname].fullname);
+            write.push_back(travelerMap[usrname].email);
+            write.push_back(travelerMap[usrname].password);
+            write.push_back(travelerMap[usrname].nationality);
+            string gen;
+            gen += travelerMap[usrname].gender;
+            write.push_back(gen);
+            string str= to_string(travelerMap[usrname].age);
+            write.push_back(str);
+            writefile(filePaths[0], enterData);
+
+        }
+        if (numofdata == 2) // the admin wants to edit the traveller's emails (editing email data )
+        {
+            cout << " Enter the new email : " << endl ;
+            string newemail ;
+            cin >> newemail ;
+            travelerMap[usrname].email = newemail;
+
+            //Travelers traveller(usrname, travelerMap[usrname].fullname, pswrd, travelerMap[usrname].email, travelerMap[usrname].nationality, travelerMap[usrname].gender, travelerMap[usrname].age);
+            write.push_back("Edit : ");
+            write.push_back(usrname);
+            write.push_back(travelerMap[usrname].fullname);
+            write.push_back(travelerMap[usrname].email);
+            write.push_back(travelerMap[usrname].password);
+            write.push_back(travelerMap[usrname].nationality);
+            string gen;
+            gen += travelerMap[usrname].gender;
+            write.push_back(gen);
+            string str= to_string(travelerMap[usrname].age);
+            write.push_back(str);
+            writefile(filePaths[0], enterData);
 
 
         }
+        if (numofdata == 3) // the admin wants to edit the traveller's gender (editing gender data )
+        {
+            cout << " Enter the updated gender : " << endl ;
+            char newgender;
+            cin >> newgender ;
+
+
+            string gen;
+            travelerMap[usrname].gender = newgender;
+            gen = travelerMap[usrname].gender;
+
+
+            write.push_back("Edit : ");
+            write.push_back(usrname);
+            write.push_back(travelerMap[usrname].fullname);
+            write.push_back(travelerMap[usrname].email);
+            write.push_back(travelerMap[usrname].password);
+            write.push_back(travelerMap[usrname].nationality);
+            write.push_back(gen);
+
+            string str= to_string(travelerMap[usrname].age);
+            write.push_back(str);
+            writefile(filePaths[0], enterData);
+
+        }
+        if (numofdata == 4) // the admin wants to edit the traveller's age (editing age data )
+        {
+            cout << " Enter the updated age : " << endl ;
+            int newage ;
+            cin >> newage ;
+
+            //Travelers traveller(usrname, travelerMap[usrname].fullname, pswrd, travelerMap[usrname].email, travelerMap[usrname].nationality, travelerMap[usrname].gender, travelerMap[usrname].age);
+            write.push_back("Edit : ");
+            write.push_back(usrname);
+            write.push_back(travelerMap[usrname].fullname);
+            write.push_back(travelerMap[usrname].email);
+            write.push_back(travelerMap[usrname].password);
+            write.push_back(travelerMap[usrname].nationality);
+            string gen;
+            gen += travelerMap[usrname].gender;
+            write.push_back(gen);
+            string str= to_string(newage);
+            write.push_back(str);
+            writefile(filePaths[0], enterData);
+
+
+        }
+        if (numofdata == 5 ) // the admin wants to edit the traveller's nationality (editing nationality data )
+        {
+            cout << " Enter the new nationality : " << endl ;
+            string newnation ;
+            cin >> newnation ;
+            travelerMap[usrname].nationality = newnation;
+
+            //Travelers traveller(usrname, travelerMap[usrname].fullname, pswrd, travelerMap[usrname].email, travelerMap[usrname].nationality, travelerMap[usrname].gender, travelerMap[usrname].age);
+            write.push_back("Edit : ");
+            write.push_back(usrname);
+            write.push_back(travelerMap[usrname].fullname);
+            write.push_back(travelerMap[usrname].email);
+            write.push_back(travelerMap[usrname].password);
+            write.push_back(travelerMap[usrname].nationality);
+            string gen;
+            gen += travelerMap[usrname].gender;
+            write.push_back(gen);
+            string str= to_string(travelerMap[usrname].age);
+            write.push_back(str);
+            writefile(filePaths[0], enterData);
+
+
+
+        }
+}
+void Edithost (int op , int torh, string usrname) {
+    ofstream enterData;
+    int numofdata;
+    cout << "Enter the number of the required data to be edited : " << endl;
+    cin >> numofdata;
+    if (numofdata == 1) // the admin wants to edit the host's name (editing full name data )
+    {
+        cout << " Enter the new name : " << endl;
+        string newname;
+        cin >> newname;
+        hostMap[usrname].fullname = newname;
+
+
+        write.push_back("Edit : ");
+        write.push_back(usrname);
+        write.push_back(hostMap[usrname].fullname);
+        write.push_back(hostMap[usrname].password);
+        write.push_back(hostMap[usrname].email);
+        write.push_back(hostMap[usrname].nationality);
+        string gen;
+        gen += hostMap[usrname].gender;
+        write.push_back(gen);
+        string str = to_string(hostMap[usrname].age);
+        write.push_back(str);
+        writefile(filePaths[1], enterData);
+
     }
+    if (numofdata == 2) // the admin wants to edit the host's emails (editing email data )
+    {
+        cout << " Enter the new email : " << endl;
+        string newemail;
+        cin >> newemail;
+        hostMap[usrname].email = newemail;
+
+
+        write.push_back("Edit : ");
+        write.push_back(usrname);
+        write.push_back(hostMap[usrname].fullname);
+        write.push_back(hostMap[usrname].password);
+        write.push_back(hostMap[usrname].email);
+        write.push_back(hostMap[usrname].nationality);
+        string gen;
+        gen += hostMap[usrname].gender;
+        write.push_back(gen);
+        string str = to_string(hostMap[usrname].age);
+        write.push_back(str);
+        writefile(filePaths[1], enterData);
+
+    }
+    if (numofdata == 3) // the admin wants to edit the host's gender (editing gender data )
+    {
+        cout << " Enter the updated gender : " << endl;
+        char newgender;
+        cin >> newgender;
+        hostMap[usrname].gender = newgender;
+
+
+        write.push_back("Edit : ");
+        write.push_back(usrname);
+        write.push_back(hostMap[usrname].fullname);
+        write.push_back(hostMap[usrname].password);
+        write.push_back(hostMap[usrname].email);
+        write.push_back(hostMap[usrname].nationality);
+        string gen;
+        gen += hostMap[usrname].gender;
+        write.push_back(gen);
+        string str = to_string(hostMap[usrname].age);
+        write.push_back(str);
+        writefile(filePaths[1], enterData);
+
+    }
+    if (numofdata == 4) // the admin wants to edit the host's age (editing age data )
+    {
+        cout << " Enter the updated age : " << endl;
+        int newage;
+        cin >> newage;
+        hostMap[usrname].age = newage;
+
+
+        write.push_back("Edit : ");
+        write.push_back(usrname);
+        write.push_back(hostMap[usrname].fullname);
+        write.push_back(hostMap[usrname].password);
+        write.push_back(hostMap[usrname].email);
+        write.push_back(hostMap[usrname].nationality);
+        string gen;
+        gen += hostMap[usrname].gender;
+        write.push_back(gen);
+        string str = to_string(hostMap[usrname].age);
+        write.push_back(str);
+        writefile(filePaths[1], enterData);
+
+    }
+    if (numofdata == 5) // the admin wants to edit the hosts's nationality (editing nationality data )
+    {
+        cout << " Enter the new nationality : " << endl;
+        string newnation;
+        cin >> newnation;
+        hostMap[usrname].nationality = newnation;
+
+        write.push_back("Edit : ");
+        write.push_back(usrname);
+        write.push_back(hostMap[usrname].fullname);
+        write.push_back(hostMap[usrname].password);
+        write.push_back(hostMap[usrname].email);
+        write.push_back(hostMap[usrname].nationality);
+        string gen;
+        gen += hostMap[usrname].gender;
+        write.push_back(gen);
+        string str = to_string(hostMap[usrname].age);
+        write.push_back(str);
+        writefile(filePaths[1], enterData);
+
+
+    }
+}
