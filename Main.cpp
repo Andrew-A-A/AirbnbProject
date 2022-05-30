@@ -64,9 +64,11 @@ the value will be the struct which contains the rest of the data in the object *
 unordered_map<string, Host>hostMap;
 unordered_map<string, Travelers>travelerMap;
 unordered_map<string, Admin>adminMap;
-
+multimap <string , HostsPlaces> available_places;
 
 // User-defined functions' signature
+bool Search(multimap<string, HostsPlaces> placesMap , TravelerTrips trip);
+bool isAvalible(HostsPlaces foundPlace , TravelerTrips trips );
 void stringop(string curr, int num);
 void InsertTraveler(Travelers& traveler);
 void InsertHost(Host& host);
@@ -118,6 +120,14 @@ int main() {
         Login(torh);
 
     }
+
+
+    read.clear();
+    write.clear();
+    travelerMap.clear();
+    adminMap.clear();
+    available_places.clear();
+    hostMap.clear();
 }
 void stringop(string curr, int num)
 {
@@ -215,7 +225,12 @@ float x= stof(read[4]);
     if(isConfirmed!=1)
     hostMap[place.getHostusername()].places.push(place);
     else
+    {
         hostMap[place.getHostusername()].confirmed_places.push_back(place);
+    }
+    for (int i = 0; i < hostMap[place.getHostusername()].confirmed_places.size(); ++i) {
+        available_places.insert({hostMap[place.getHostusername()].confirmed_places[i].City,hostMap[place.getHostusername()].confirmed_places[i]});
+    }
     return place;
 }
 
@@ -501,30 +516,29 @@ void Login(int torh  ) {
 //                                    travelerMap[usrname].email, travelerMap[usrname].nationality,
 //                                    travelerMap[usrname].gender, travelerMap[usrname].age);
 
-               // cout<< travelerMap[usrname].top().getCity()<<endl;
-               cout<<travelerMap[usrname].trips.empty()
-               <<endl;
+                // cout<< travelerMap[usrname].top().getCity()<<endl;
+                cout << travelerMap[usrname].trips.empty()
+                     << endl;
                 int triporback;
                 cout << "To book a new trip press 1 / To go back press 0" << endl;
                 cin >> triporback;
 
                 //Allow the user to book a new trip and get the details of the trip from the user
                 if (triporback == 1) {
-                    write.push_back("Trips");
-                    write.push_back(usrname);
+
                     cout << "Write down your dream city :" << endl;
                     string city;
                     cin >> city;
-                    write.push_back(city);
+
                     cout << "Enter your start and end dates :" << endl;
                     cout << "Start date : " << endl;
                     string start;
                     cin >> start;
-                    write.push_back(start);
+
                     cout << "End date :" << endl;
                     string end;
                     cin >> end;
-                    write.push_back(end);
+
                     cout << "EMPTY YOUR POCKETS HERE and write down the maximum and minimum budget for your trip : "
                          << endl;
                     cout << " Maximum price  : " << endl;
@@ -532,34 +546,51 @@ void Login(int torh  ) {
                     cin >> mx;
                     string maxnum;
                     maxnum = to_string(mx);
-                    write.push_back(maxnum);
+
                     cout << " Minimum price : " << endl;
                     float mn;
                     cin >> mn;
                     string minnum;
                     minnum = to_string(mn);
-                    write.push_back(minnum);
+
+
+                    TravelerTrips tripp(usrname, city, start, end, mx, mn);
+                    if (Search(available_places, tripp)) {
+                        write.push_back("Trips");
+                        write.push_back(usrname);
+                        write.push_back(city);
+                        write.push_back(start);
+                        write.push_back(end);
+                        write.push_back(maxnum);
+                        write.push_back(minnum);
+                        travelerMap[usrname].InsertTrip(city, start, end, mx, mn, usrname);
+
+                        writefile(filePaths[2], enterData);
+                    } else {
+                        cout << "No Available place\n";
+                    }
 
                     //Create Travelers object to be albe to call the InsertTrip function
-                    Travelers travelerr(usrname, travelerMap[usrname].fullname, travelerMap[usrname].password,
-                                        travelerMap[usrname].email, travelerMap[usrname].nationality,
-                                        travelerMap[usrname].gender, travelerMap[usrname].age);
+//                    Travelers travelerr(usrname, travelerMap[usrname].fullname, travelerMap[usrname].password,
+//                                        travelerMap[usrname].email, travelerMap[usrname].nationality,
+//                                        travelerMap[usrname].gender, travelerMap[usrname].age);
 
                     //Call the InsertTrip function and pass the needed parameters to instantiate a new object of TravelerTrips class
-                    travelerr.InsertTrip(city, start, end, mx, mn, usrname);
-                    writefile(filePaths[2], enterData);
+
                 } else {
                     cout << "Incorrect password please enter the correct password " << endl;
                     goto jumpA;
                 }
-            }
-            else {
+            } else {
                 //For new users allow them to sing up/create an account first
                 cout << "Please sign up first to be able to book a trip :( " << endl;
             }
 
         }
     }
+
+
+
         //Host Case
     if (torh == 2) {
             //Allow the host to login to add a new place
@@ -593,14 +624,25 @@ void Login(int torh  ) {
                         string city;
                         cin >> city;
                         write.push_back(city);
+                        validDate:
                         cout << "When will your place be available ? : \n";
                         string startDate;
                         cin >> startDate;
-                        write.push_back(startDate);
                         cout << "When won't your place be available ? : \n";
                         string endDate;
                         cin >> endDate;
-                        write.push_back(endDate);
+                        int x=(endDate[endDate.size()-2]+endDate[endDate.size()-1])-(startDate[startDate.size()-2]+startDate[startDate.size()-1]);
+                        if(x!=0 && x!=1)
+                        {
+                            cout<<"Invalid date\n The max duration is 1 year\n";
+                            goto validDate;
+                        }
+                        else
+                        {
+                            write.push_back(startDate);
+                            write.push_back(endDate);
+                        }
+                        //cout<<x<<endl;
                         cout << "Set Rent Price : \n";
                         float price;
                         cin >> price;
@@ -720,7 +762,6 @@ void Login(int torh  ) {
         }
         }
     }
-
     void Edittraveller (int op , int torh, string usrname){
         int numofdata ;
         ofstream enterData;
@@ -957,4 +998,80 @@ void Edithost (int op , int torh, string usrname) {
 
 
     }
+}
+bool isAvalible(HostsPlaces foundPlace , TravelerTrips trips ) {
+    StayRange place = foundPlace.DateConverting(foundPlace.availability.startdate, foundPlace.availability.enddate);
+    StayRange trip = trips.DateConverting(trips.getStartdate(), trips.getEnddate());
+    StayRange difference;
+    difference.StartDay = trip.StartDay;
+    difference.StartMonth = trip.StartMonth;
+    difference.StartYear = trip.StartYear;
+    difference.EndDay = place.StartDay;
+    difference.EndMonth = place.StartMonth;
+    difference.EndYear = place.StartYear;
+    int x = foundPlace.NumDays(place);
+    int y = foundPlace.NumDays(trip);
+    int r = foundPlace.NumDays(difference);
+
+    bool val = true;
+    if (y <= x) {
+        for (int i = y - 1, cnt = 1; cnt <= r; i++) {
+            if (foundPlace.timeline[i]) {
+                val = false;
+                break;
+            }
+        }
+    }
+    return val;
+}
+bool Search(multimap<string, HostsPlaces> placesMap , TravelerTrips trip)
+{
+    int size=placesMap.count(trip.getCity());
+    bool value=false;
+    if (size>0){
+
+        for ( auto i = placesMap.find(trip.getCity()); i != placesMap.end() ; ++i) {
+            if (i->first!=trip.getCity()){
+                break;
+            }
+            if ((trip.getMnprice()<i->second.getPricepernight() && trip.getMxprice()>i->second.getPricepernight())||trip.getMnprice()==i->second.getPricepernight()||trip.getMxprice()==i->second.getPricepernight())
+            {
+                //Check For availability
+                if(isAvalible(i->second,trip)) {
+                    StayRange place = i->second.DateConverting(i->second.availability.startdate,
+                                                               i->second.availability.enddate);
+                    StayRange trips = trip.DateConverting(trip.getStartdate(), trip.getEnddate());
+                    StayRange difference;
+                    difference.StartDay = trips.StartDay;
+                    difference.StartMonth = trips.StartMonth;
+                    difference.StartYear = trips.StartYear;
+                    difference.EndDay = place.StartDay;
+                    difference.EndMonth = place.StartMonth;
+                    difference.EndYear = place.StartYear;
+                    int x = i->second.NumDays(place);
+                    int y = i->second.NumDays(trips);
+                    int r = i->second.NumDays(difference);
+                    for (int j = y - 1, cnt = 1; cnt <= r; j++)
+                    {
+                        i->second.timeline[j]=true;
+                    }
+                    cout<<"Your trip has been BOOKED successfully :)\n";
+                    cout<<"Your Host's Full Name: "<<hostMap[i->second.getHostusername()].fullname;
+                    cout<<"Your Host's Email: "<<hostMap[i->second.getHostusername()].email;
+                    value= true;
+                }
+                else
+                {
+                    cout<<"No place available at this time\n";
+                    value= false;
+                }
+            }
+            else
+            {
+                cout<<"No Place with this price.\n";
+                value=false;
+            }
+        }
+    }
+    return value;
 }

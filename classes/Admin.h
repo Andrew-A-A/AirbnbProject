@@ -22,7 +22,7 @@ public:
     static void DeleteData(string usr ,unordered_map<string,Travelers> &map);
     static void Display();
     void Edit(string[]);
-    multimap<string , HostsPlaces> RequestHost(queue<HostsPlaces> , Host &host);
+    multimap <string , HostsPlaces> RequestHost(queue<HostsPlaces> , Host &host);
     //Getters
     const string &getUsername() const;
     const string &getPassword() const;

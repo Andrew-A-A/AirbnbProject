@@ -1,6 +1,8 @@
 #pragma once
 #include<string>
 #include<iostream>
+#include <vector>
+#include "TravelerTrips.h"
 using namespace  std;
 
 struct availability
@@ -18,7 +20,7 @@ struct availability
 class HostsPlaces
 {
 public:
-
+    vector<bool> timeline;
     bool IsConfirmed;
 	string City;
 	float pricepernight;
@@ -28,9 +30,10 @@ public:
     availability availability;
 	HostsPlaces();
 	HostsPlaces(string hostusername,string city, string start, string end,float price);
-
     HostsPlaces(string hostusername,string city, string start, string end,float price,bool isConfirmed);
-	~HostsPlaces(void);
+    StayRange DateConverting( string startdate,string enddate);
+    int NumDays(StayRange stayRange);
+    ~HostsPlaces(void);
 
     const string &getCity() const;
 

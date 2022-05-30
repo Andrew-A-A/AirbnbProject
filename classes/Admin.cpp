@@ -5,7 +5,7 @@
 #include "Admin.h"
 #include "Host.h"
 #include "HostsPlaces.h"
-
+#include<map>
 Admin::Admin():NewUser() {}
 
 void Admin::DeleteData(string usr,unordered_map<string ,Host > &map) {
@@ -24,8 +24,8 @@ void Admin::DeleteData(string usr,unordered_map<string ,Travelers > &map){
         else{
             cout<<"User "<<usr<<" Deleted :> \n";
 
-            map.erase(usr);
-        }
+        map.erase(usr);
+    }
 }
 
 void Admin::Display() {
@@ -54,7 +54,7 @@ const string &Admin::getFullname() const {
     return NewUser::getFullname();
 }
 
-multimap<string , HostsPlaces> Admin::RequestHost(queue<HostsPlaces> , Host &host) {
+multimap <string, HostsPlaces> Admin::RequestHost(queue<HostsPlaces> , Host &host) {
     int size=host.places.size();
 cout<<size;
     for (int i = 0; i < size ; ++i) {
@@ -74,7 +74,7 @@ cout<<size;
     multimap <string , HostsPlaces> available_places;
     vector<HostsPlaces>avail=host.confirmed_places;
     for (int i = 0; i < avail.size(); ++i) {
-        available_places.insert({avail[i].City , avail[i]});
+        available_places.insert({avail[i].City,avail[i]});
     }
     return available_places;
 }

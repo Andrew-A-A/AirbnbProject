@@ -17,6 +17,12 @@ private:
 	string city;
 	string startdate;
 	string enddate;
+//    int StartDay;
+//    int StartMonth;
+//    int StartYear;
+//    int EndDay;
+//    int EndMonth;
+//    int EndYear;
 	float mxprice, mnprice;
 public:
     const string &getTravelerusername() const;
@@ -32,10 +38,13 @@ public:
     float getMnprice() const;
 
 public:
+
     StayRange stayRange;
     TravelerTrips();
 
-    TravelerTrips(string Tusername, string city, string start, string end, float mx, float mn);
-
+    TravelerTrips(string Tusername, string city, string startdate, string enddate
+                  , float mx, float mn);
+    StayRange DateConverting( string startdate,string enddate);
+    int NumDays(StayRange stayRange);
 };
 
