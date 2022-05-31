@@ -1,5 +1,3 @@
 Username% Fullname% Password% Email% Nationality% Gender% Age%
-andrew% Andrew Adel% andrew% LOL% a% M% 20%
-andrew%  Andrew Adel%  andrew%  LOL% b% M% 20%
-andrew%   Andrew Adel%   andrew%   LOL%  b% M% 22%
-madonna-shokry% madonna bahaa% mad@gmail.com% 12% eg% f% 21%
+andrew% Andrew Adel%andrew% AndroAdel@Gamil.com% Egyptian% M% 20%
+madonna-shokry%madonnabahaa% mad@gmail.com% 12% Egyptian% f% 21%

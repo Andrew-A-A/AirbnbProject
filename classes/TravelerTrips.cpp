@@ -67,7 +67,7 @@ StayRange TravelerTrips::DateConverting(string startdate, string enddate)
                 date.EndDay=stoi(s);
 
             }
-            else if(idx==4)
+            if(idx==4)
             {
                 date.EndMonth=stoi(s);
 
@@ -96,7 +96,14 @@ StayRange TravelerTrips::DateConverting(string startdate, string enddate)
 int TravelerTrips::NumDays(StayRange stayRange)
 {
     int days=0;
-    days+=(30-stayRange.StartDay)+stayRange.EndDay;
+    if(stayRange.EndMonth-stayRange.StartMonth==0)
+    {
+        days+=( stayRange.EndDay-stayRange.StartDay);
+        return days;
+    }
+    else {
+        days += (30 - stayRange.StartDay) + stayRange.EndDay;
+    }
     if(stayRange.EndMonth-stayRange.StartMonth>1)
     {
         days+=(stayRange.EndMonth-stayRange.StartMonth)*30;

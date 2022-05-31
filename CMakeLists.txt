@@ -8,8 +8,6 @@ include_directories("classes")
 add_executable(AirbnbProject
         "classes/Host.cpp"
         "classes/Host.h"
-        "classes/AirbnbPlaces.cpp"
-        "classes/AirbnbPlaces.h"
         "classes/HostsPlaces.cpp"
         "classes/HostsPlaces.h"
         "Main.cpp"
@@ -18,4 +16,4 @@ add_executable(AirbnbProject
         "classes/Travelers.cpp"
         "classes/Travelers.h"
         "classes/TravelerTrips.cpp"
-        "classes/TravelerTrips.h" classes/Admin.cpp classes/Admin.h)
+        "classes/TravelerTrips.h" classes/Admin.cpp classes/Admin.h DataStructure/Stack.cpp DataStructure/Stack.h DataStructure/Queue.cpp DataStructure/Queue.h)

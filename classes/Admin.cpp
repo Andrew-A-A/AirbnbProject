@@ -56,8 +56,8 @@ const string &Admin::getFullname() const {
 
 multimap <string, HostsPlaces> Admin::RequestHost(queue<HostsPlaces> , Host &host) {
     int size=host.places.size();
-cout<<size;
-    for (int i = 0; i < size ; ++i) {
+     cout<<"Number of requests : "<<size-1<<endl;
+    for (int i = 0; i < size-1 ; ++i) {
         cout<< "Host " <<host.places.front().Hostusername <<" wants to add a place in "<< host.places.front().City<< " with price "<<host.places.front().pricepernight<<"L.E. per night \n";
         cout<<"To accept the host's request press 1 \nTo ignore the host's request press 2 ";
         int options;
