@@ -19,7 +19,7 @@ StayRange TravelerTrips::DateConverting(string startdate, string enddate)
     StayRange date;
     for(int i=0;i<startdate.size();i++)
     {
-        if(startdate[i]!='/')
+        if(startdate[i]!='/' )
         {
             s+=startdate[i];
         }
@@ -27,23 +27,33 @@ StayRange TravelerTrips::DateConverting(string startdate, string enddate)
         {
             if(idx==0)
             {
+
                 date.StartDay=stoi(s);
-                cout<<date.StartDay;
+
             }
-            else if(idx==1)
+            if(idx==1)
             {
                 date.StartMonth=stoi(s);
-                cout<<date.StartMonth;
             }
-            else if(idx==2)
+            if (idx!=2)
             {
-                date.StartYear=stoi(s);
-                cout<<date.StartYear;
+                s.clear();
             }
             idx++;
-            s.clear();
+            if (idx==2)
+            {
+                continue;
+            }
+        }
+        if(idx==2)
+        {
+
+            date.StartYear=stoi(s);
+
         }
     }
+    s.clear();
+    idx++;
     for(int i=0;i<enddate.size();i++)
     {
         if(enddate[i]!='/')
@@ -55,23 +65,31 @@ StayRange TravelerTrips::DateConverting(string startdate, string enddate)
             if(idx==3)
             {
                 date.EndDay=stoi(s);
-                cout<<date.EndDay;
+
             }
             else if(idx==4)
             {
                 date.EndMonth=stoi(s);
-                cout<<date.EndMonth;
+
             }
-            else if(idx==5)
+            if (idx!=5)
             {
-                date.EndYear=stoi(s);
-                cout<<date.EndYear;
+                s.clear();
             }
             idx++;
-            s.clear();
+            if (idx==5)
+            {
+                continue;
+            }
+
+        }
+        if(idx==5)
+        {
+            date.EndYear=stoi(s);
+
         }
     }
-
+    s.clear();
     return date;
 }
 

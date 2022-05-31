@@ -3,12 +3,12 @@
 #include<iostream>
 using namespace std;
 struct StayRange{
-    int StartDay;
-    int StartMonth;
-    int StartYear;
-    int EndDay;
-    int EndMonth;
-    int EndYear;
+    int StartDay=0;
+    int StartMonth=0;
+    int StartYear=0;
+    int EndDay=0;
+    int EndMonth=0;
+    int EndYear=0;
 };
 class TravelerTrips
 {

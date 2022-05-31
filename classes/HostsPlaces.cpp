@@ -67,12 +67,12 @@ HostsPlaces::HostsPlaces(string hostusername, string city, string start, string 
 StayRange HostsPlaces::DateConverting(string startdate, string enddate)
 {
 
-    string s,e;
+    string s;
     int idx=0;
     StayRange date;
     for(int i=0;i<startdate.size();i++)
     {
-        if(startdate[i]!='/' || i!=startdate.size()-1)
+        if(startdate[i]!='/' )
         {
             s+=startdate[i];
         }
@@ -80,52 +80,85 @@ StayRange HostsPlaces::DateConverting(string startdate, string enddate)
         {
             if(idx==0)
             {
+
                 date.StartDay=stoi(s);
+
             }
-            else if(idx==1)
+            if(idx==1)
             {
+
                 date.StartMonth=stoi(s);
+
             }
-            else if(idx==2)
+            if (idx!=2)
             {
-                date.StartYear=stoi(s);
+                s.clear();
             }
             idx++;
-            s.clear();
+            if (idx==2)
+            {
+                continue;
+            }
+        }
+        if(idx==2)
+        {
+
+            date.StartYear=stoi(s);
+
         }
     }
-    for(int j=0;j<enddate.size();j++)
+    s.clear();
+    idx++;
+    for(int i=0;i<enddate.size();i++)
     {
-        if(enddate[j]!='/' || j==enddate.size()-1)
+        if(enddate[i]!='/')
         {
-            e+=enddate[j];
+            s+=enddate[i];
         }
         else
         {
             if(idx==3)
             {
-                date.EndDay=stoi(e);
+                date.EndDay=stoi(s);
+
             }
             else if(idx==4)
             {
-                date.EndMonth=stoi(e);
+                date.EndMonth=stoi(s);
+
             }
-            else if(idx==5)
+            if (idx!=5)
             {
-                date.EndYear=stoi(e);
+                s.clear();
             }
             idx++;
-            e.clear();
+            if (idx==5)
+            {
+                continue;
+            }
+
+        }
+        if(idx==5)
+        {
+            date.EndYear=stoi(s);
+
         }
     }
-
+    s.clear();
     return date;
 }
 
 int HostsPlaces::NumDays(StayRange stayRange)
 {
     int days=0;
-    days+=(30-stayRange.StartDay)+stayRange.EndDay;
+    if(stayRange.EndMonth-stayRange.StartMonth==0)
+    {
+        days+=( stayRange.EndDay-stayRange.StartDay);
+        return days;
+    }
+    else {
+        days += (30 - stayRange.StartDay) + stayRange.EndDay;
+    }
     if (stayRange.EndYear-stayRange.StartYear==1)
     {
         days+=(stayRange.EndMonth-stayRange.StartMonth+12-1)*30;

@@ -26,12 +26,18 @@ public:
 	float pricepernight;
 	string Hostusername;
 
+
 public:
     availability availability;
 	HostsPlaces();
 	HostsPlaces(string hostusername,string city, string start, string end,float price);
     HostsPlaces(string hostusername,string city, string start, string end,float price,bool isConfirmed);
+
+
+
+
     StayRange DateConverting( string startdate,string enddate);
+
     int NumDays(StayRange stayRange);
     ~HostsPlaces(void);
 

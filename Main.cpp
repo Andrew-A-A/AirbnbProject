@@ -1,11 +1,9 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include <cstring>
 #include<sstream>
 #include<vector>
 #include<unordered_map>
-#include <ctime>
 //including all the classes created
 #include"classes/Host.h"
 #include"classes/AirbnbPlaces.h"
@@ -19,7 +17,6 @@ using namespace std;
 vector<string> read;        //vector to write into the data you read from the file
 vector<string> write;       //vector to write into the data you need to write in your file
 
-
 //These are the file paths to the text files
 string filePaths[5] =
 {
@@ -29,35 +26,6 @@ string filePaths[5] =
     "..\\Data\\Places.txt",
     "..\\Data\\Admins.txt"
 };
-
-//struct hostData
-//{
-//    string fullname;
-//    string password;
-//    string email;
-//    string nationality;
-//    char gender;
-//    int age;
-//};
-//struct travelerData
-//{
-//    string fullname;
-//    string password;
-//    string email;
-//    string nationality;
-//    char gender;
-//    int age;
-//};
-//struct NoUserNameData
-//{
-//    string fullname;
-//    string password;
-//    string email;
-//    string nationality;
-//    char gender{};
-//    int age{};
-//    queue<HostsPlaces> places;
-//};
 
 /* created the struct so that to pass the map objects of structured the key will be the username
 the value will be the struct which contains the rest of the data in the object */
@@ -1003,20 +971,21 @@ bool isAvalible(HostsPlaces foundPlace , TravelerTrips trips ) {
     StayRange place = foundPlace.DateConverting(foundPlace.availability.startdate, foundPlace.availability.enddate);
     StayRange trip = trips.DateConverting(trips.getStartdate(), trips.getEnddate());
     StayRange difference;
-    difference.StartDay = trip.StartDay;
-    difference.StartMonth = trip.StartMonth;
-    difference.StartYear = trip.StartYear;
-    difference.EndDay = place.StartDay;
-    difference.EndMonth = place.StartMonth;
-    difference.EndYear = place.StartYear;
+    difference.EndDay = trip.StartDay;
+    difference.EndMonth = trip.StartMonth;
+    difference.EndYear = trip.StartYear;
+    difference.StartDay = place.StartDay;
+    difference.StartMonth = place.StartMonth;
+    difference.StartYear = place.StartYear;
     int x = foundPlace.NumDays(place);
     int y = foundPlace.NumDays(trip);
     int r = foundPlace.NumDays(difference);
 
     bool val = true;
     if (y <= x) {
-        for (int i = y - 1, cnt = 1; cnt <= r; i++) {
+        for (int i = r -1 , cnt = 1; cnt <= y; i++ , cnt++) {
             if (foundPlace.timeline[i]) {
+               cout<<"Timeline : "<<foundPlace.timeline[i]<<endl;
                 val = false;
                 break;
             }
@@ -1059,6 +1028,7 @@ bool Search(multimap<string, HostsPlaces> placesMap , TravelerTrips trip)
                     cout<<"Your Host's Full Name: "<<hostMap[i->second.getHostusername()].fullname;
                     cout<<"Your Host's Email: "<<hostMap[i->second.getHostusername()].email;
                     value= true;
+                    break;
                 }
                 else
                 {
